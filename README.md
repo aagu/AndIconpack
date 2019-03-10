@@ -14,4 +14,4 @@ And图标包
 <img src="https://github.com/hujincan/AndIconpack/tree/master/Screenshot/Screenshot_1.png?raw=true"/>
 
 
-![1](https://github.com/hujincan/Assistant/blob/master/Screenshot/Screenshot_20181230-111245.png)
+![1](https://github.com/hujincan/AndIconpack/blob/master/Screenshot/Screenshot_1.png)
