@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".fragment.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_margin="10dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_text"
+                android:textSize="22sp"
+                android:padding="8dp"/>
+
+
+            <TextView
+                android:id="@+id/introduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_text"
+                android:textSize="16sp"
+                android:padding="6dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:background="?attr/colorPrimaryDark">
+
+                <ImageView
+                    android:id="@+id/iconsIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_dashboard_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/iconText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="2dp"
+                    android:paddingStart="10dp"
+                    android:text="图标"
+                    android:layout_toRightOf="@+id/iconsIcon"/>
+
+                <TextView
+                    android:id="@+id/iconNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="2dp"
+                    android:paddingStart="10dp"
+                    android:layout_below="@+id/iconText"
+                    android:layout_toRightOf="@+id/iconsIcon"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:background="?attr/colorPrimaryDark">
+
+                <ImageView
+                    android:id="@+id/newIcon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_local_florist_black_24dp"/>
+
+                <TextView
+                    android:id="@+id/newText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="17sp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="2dp"
+                    android:paddingStart="10dp"
+                    android:text="新增"
+                    android:layout_toRightOf="@+id/newIcon"/>
+
+                <TextView
+                    android:id="@+id/newNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:paddingBottom="6dp"
+                    android:paddingTop="2dp"
+                    android:paddingStart="10dp"
+                    android:layout_below="@+id/newText"
+                    android:layout_toRightOf="@+id/newIcon"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/other"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:padding="36dp"
+            android:text="这里界面随意编写\n↓↓↓↓↓↓" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
