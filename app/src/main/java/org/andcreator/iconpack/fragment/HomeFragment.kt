@@ -15,6 +15,8 @@ import android.content.Intent
 import android.net.Uri
 
 
+
+
 /**
  * A simple [Fragment] subclass.
  *
@@ -41,9 +43,19 @@ class HomeFragment : Fragment() {
         newNumber.text = "40"
         Glide.with(this).load(R.drawable.logo).into(img_star)
 
+        openResource.setOnClickListener {
+            startHttp("https://github.com/hujincan/AndIconpack")
+        }
+
         ll_card_main3_rate.setOnClickListener {
             openAppStore(packageName = context!!.packageName)
         }
+    }
+
+    private fun startHttp(uri: String) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(uri)
+        context!!.startActivity(intent)
     }
 
 
