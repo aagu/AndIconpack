@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fafafa"
     tools:context=".fragment.IconsFragment">
 
     <ProgressBar
@@ -15,7 +16,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerIcons"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"/>
 
     <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
         android:id="@+id/recyclerScroller"

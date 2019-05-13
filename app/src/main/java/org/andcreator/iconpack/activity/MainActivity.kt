@@ -67,53 +67,6 @@ class MainActivity : AppCompatActivity() {
         getPermission()
         initView()
 
-        fab.setOnClickListener {
-            if (fabStatus==1){
-                pager.currentItem = 3
-            }else{
-                if (permissionList.isEmpty()){
-
-                    val s = requestsFragment.getMessage()
-
-                    val file = File(externalCacheDir,"requests.txt")
-
-                    var out: FileOutputStream? = null
-                    try {
-                        if (!file.exists()) {
-                            val files = File(file.parent)
-                            files.mkdirs()
-                            file.createNewFile()
-                        }
-
-                        out = FileOutputStream(file)
-                        out.write(s.toByteArray())
-
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                    } finally {
-                        try {
-                            if (out == null){
-                                return@setOnClickListener
-                            }
-                            out.flush()
-                            out.close()
-                        } catch (e: IOException) {
-                            e.printStackTrace()
-                        }
-                    }
-
-                    val sendIntent = Intent()
-                    sendIntent.action = Intent.ACTION_SEND
-                    sendIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, "$packageName.provider", file))
-                    sendIntent.type = "text/plain"
-                    sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    startActivity(Intent.createChooser(sendIntent,"发送给.."))
-
-                }else{
-                    Snackbar.make(fab,"请到设置授予存储空间权限",Snackbar.LENGTH_SHORT).show()
-                }
-            }
-        }
     }
 
     private fun initView(){
@@ -197,6 +150,61 @@ class MainActivity : AppCompatActivity() {
         refresh.setOnClickListener {
             loadIcons()
         }
+
+
+        fab.setOnClickListener {
+            if (fabStatus==1){
+                pager.currentItem = 3
+            }else{
+                if (permissionList.isEmpty()){
+
+                    val s = requestsFragment.getMessage()
+
+                    if (s.isNotEmpty()){
+
+                        val file = File(externalCacheDir,"requests.txt")
+
+                        var out: FileOutputStream? = null
+                        try {
+                            if (!file.exists()) {
+                                val files = File(file.parent)
+                                files.mkdirs()
+                                file.createNewFile()
+                            }
+
+                            out = FileOutputStream(file,false)
+                            out.write(s.toByteArray())
+
+                        } catch (e: IOException) {
+                            e.printStackTrace()
+                        } finally {
+                            try {
+                                if (out == null){
+                                    return@setOnClickListener
+                                }
+                                out.flush()
+                                out.close()
+                            } catch (e: IOException) {
+                                e.printStackTrace()
+                            }
+                        }
+
+                        val sendIntent = Intent()
+                        sendIntent.action = Intent.ACTION_SEND
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this,
+                            "$packageName.provider", file))
+                        sendIntent.type = "text/plain"
+                        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                        startActivity(Intent.createChooser(sendIntent,"发送给.."))
+                    }else{
+                        Snackbar.make(fab,"没有选中任何应用程序",Snackbar.LENGTH_SHORT).show()
+                    }
+
+                }else{
+                    Snackbar.make(fab,"请到设置授予存储空间权限",Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun getPermission(){
@@ -230,6 +238,7 @@ class MainActivity : AppCompatActivity() {
                 if (grantResults.isNotEmpty() && grantResults[0] != PackageManager.PERMISSION_GRANTED){
                     Toast.makeText(this,"请转到设置授予权限，否则无法正常使用", Toast.LENGTH_SHORT).show()
                 }else{
+                    permissionList.clear()
                     val wallpaperManager = WallpaperManager.getInstance(this)
                     Glide.with(this).load(wallpaperManager.drawable).into(headImg)
                 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">And 图标包</string>
+    <string name="app_name">And 仪表盘</string>
     <string name="action_settings">设置</string>
 
     <string name="extraapp">com.momocode.shortcuts</string>

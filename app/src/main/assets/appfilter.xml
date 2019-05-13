@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2017 Jahir Fiquitiva
+  ~
+  ~ Licensed under the CreativeCommons Attribution-ShareAlike
+  ~ 4.0 International License. You may not use this file except in compliance
+  ~ with the License. You may obtain a copy of the License at
+  ~
+  ~    http://creativecommons.org/licenses/by-sa/4.0/legalcode
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  ~ Special thanks to the project contributors and collaborators
+  ~ 	https://github.com/jahirfiquitiva/IconShowcase#special-thanks
+  -->
+
+<resources>
+    <!--<iconback img1="iconback1" img2="iconback2" img3="iconback3" /><iconmask img1="iconmask" /><scale factor="0" /> -->
+
+
+    <!-- Build: google / Pixel XL -->
+
+
+    <!-- 电话 / Phone -->
+
+
+    <item drawable="ic_dialer" component="ComponentInfo{com.google.android.dialer/com.google.android.dialer.extensions.GoogleDialtactsActivity}"/>
+
+    <!-- Build: google / Pixel XL -->
+
+
+    <!-- 信息 / Messages -->
+
+
+    <item drawable="ic_message" component="ComponentInfo{com.google.android.apps.messaging/com.google.android.apps.messaging.ui.ConversationListActivity}"/>
+
+    <!-- Build: google / Pixel XL -->
+
+
+    <!-- 设置 / Settings -->
+
+
+    <item drawable="ic_settings" component="ComponentInfo{com.android.settings/com.android.settings.Settings}"/>
+
+    <!-- Build: google / Pixel XL -->
+
+
+    <!-- Chrome / Chrome -->
+
+
+    <item drawable="ic_chrome" component="ComponentInfo{com.android.chrome/com.google.android.apps.chrome.Main}"/>
+
+</resources>

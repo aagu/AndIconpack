@@ -39,7 +39,6 @@
             <!-- Apex Launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="com.anddoes.launcher.THEME" />
             </intent-filter>
             <!-- Atom Launcher -->
@@ -74,25 +73,34 @@
             <!-- Next Launcher -->
             <intent-filter>
                 <action android:name="com.gtp.nextlauncher.theme" />
-
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.gtp.nextlauncher.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.gtp.nextlauncher.trial.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <!-- Nine Launcher -->
             <intent-filter>
                 <action android:name="com.gridappsinc.launcher.theme.apk_action" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <!-- Nova Launcher -->
+            <!-- Nova Launcher-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="com.teslacoilsw.launcher.THEME" />
             </intent-filter>
             <intent-filter>
                 <action android:name="com.novalauncher.THEME" />
-
                 <category android:name="com.novalauncher.category.CUSTOM_ICON_PICKER" />
+            </intent-filter>
+            <!-- Lawnchair -->
+            <intent-filter>
+                <action android:name="ch.deletescape.lawnchair.ICONPACK" />
+                <category android:name="ch.deletescape.lawnchair.PICK_ICON" />
             </intent-filter>
             <!-- LG Home -->
             <intent-filter>
@@ -120,7 +128,6 @@
             <!-- Sony Launcher -->
             <intent-filter>
                 <action android:name="com.sonymobile.home.ICON_PACK" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <!-- TSF Shell -->
@@ -133,18 +140,15 @@
             <!-- Turbo Launcher -->
             <intent-filter>
                 <action android:name="com.phonemetra.turbo.launcher.THEMES" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="com.phonemetra.turbo.launcher.icons.ACTION_PICK_ICON" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <!-- Xperia Home Launcher -->
             <intent-filter>
                 <action android:name="com.sonymobile.home.ICON_PACK" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <!-- Random launchers -->
@@ -185,7 +189,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.andcreator.iconpack.provider"
+            android:authorities="org.andcreator.iconpack.provider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

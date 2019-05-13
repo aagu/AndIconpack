@@ -53,33 +53,33 @@
                     <ImageView
                         android:id="@+id/icon1"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:layout_weight="1"
-                        android:padding="16dp"
+                        android:layout_margin="16dp"
                         android:scaleType="fitCenter"/>
 
                     <ImageView
                         android:id="@+id/icon2"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:layout_weight="1"
-                        android:padding="16dp"
+                        android:layout_margin="16dp"
                         android:scaleType="fitCenter"/>
 
                     <ImageView
                         android:id="@+id/icon3"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:layout_weight="1"
-                        android:padding="16dp"
+                        android:layout_margin="16dp"
                         android:scaleType="fitCenter"/>
 
                     <ImageView
                         android:id="@+id/icon4"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="56dp"
                         android:layout_weight="1"
-                        android:padding="16dp"
+                        android:layout_margin="16dp"
                         android:scaleType="fitCenter"/>
 
                 </LinearLayout>

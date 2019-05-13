@@ -57,7 +57,7 @@ class AboutFragment : Fragment() {
 
     private fun loadData(){
         credits.clear()
-        credits.add(AboutBean("And","图标包的创作者",R.drawable.ic_and,R.drawable.ic_and, arrayListOf("Google+","Dribbble","Coolapk"), arrayListOf("http://bubbble.org","http://bubbble.org","http://bubbble.org")))
-        credits.add(AboutBean("And","图标包模板的开发者",R.drawable.ic_and,R.drawable.ic_and, arrayListOf("Google+","Dribbble","Coolapk"), arrayListOf("http://bubbble.org","http://bubbble.org","http://bubbble.org")))
+        credits.add(AboutBean("And","图标包创作者",R.drawable.ic_and,R.drawable.logo_background, arrayListOf("Google+","Dribbble","Coolapk"), arrayListOf("http://bubbble.org","http://bubbble.org","http://bubbble.org")))
+        credits.add(AboutBean("And","仪表盘开发者",R.drawable.ic_and,R.drawable.material_background, arrayListOf("Instagram","Dribbble","Coolapk"), arrayListOf("https://www.instagram.com/andrewmartin791/","http://www.coolapk.com/u/620606","http://www.coolapk.com/u/620606")))
     }
 }

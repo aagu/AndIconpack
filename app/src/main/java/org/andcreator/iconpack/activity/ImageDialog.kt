@@ -11,12 +11,14 @@ class ImageDialog : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_dialog)
+        /*
         val m = windowManager
         val d = m.defaultDisplay //为获取屏幕宽高
         val p = window.attributes
 //        p.height = (int) (d.getHeight()*0.9); //高度设置为屏幕的0.8
         p.width = d.width * 1 //宽度设置为屏幕的0.8
         window.attributes = p
+        */
         initView()
     }
 

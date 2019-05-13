@@ -2,38 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="280dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".activity.ImageDialog">
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="24dp"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+        android:padding="16dp"
+        android:textSize="24sp"
+        android:textColor="@color/black_text"/>
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_below="@+id/name"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
 
-    <TextView
+    <Button
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/icon"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:padding="10dp"
         android:text="关闭"
         android:textColor="?attr/colorAccent"
         android:layout_margin="8dp"
         android:clickable="true"
         android:focusable="true"
         android:textSize="16sp"
-        android:foreground="?attr/selectableItemBackground"/>
+        style="@style/Widget.AppCompat.Button.Borderless"/>
 
 </RelativeLayout>

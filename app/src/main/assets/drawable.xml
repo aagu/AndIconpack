@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <version>1</version>
+	
+	<!--title="分类,这里以首字母为例"-->
+	<!--<item drawable="图标文件名字(只能含有小写字母，下划线，数字，必须以字母开头)，不含后缀名" />-->
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+
+    <!--Test-->
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_chrome" name="Chrome" />
+
+    <category title="谷歌"/>
+    <item drawable="ic_message" name="信息" />
+
+    <category title="游戏" />
+    <item drawable="ic_dialer" name="电话"  />
+
+    <categor title="社交"/>
+    <item drawable="ic_settings" name="设置" />
+
+</resources>

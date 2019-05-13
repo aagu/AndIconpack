@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import org.andcreator.iconpack.R
 import com.donkingliang.headerviewadapter.adapter.HeaderViewAdapter
 import org.jetbrains.anko.doAsync
@@ -34,8 +35,17 @@ import kotlin.collections.ArrayList
  */
 class RequestFragment : Fragment() {
 
+    /**
+     * 未适配列表
+     */
     private var appsList: ArrayList<RequestsBean> = ArrayList()
+    /**
+     * 选中列表
+     */
     private var checked: ArrayList<Boolean> = ArrayList()
+    /**
+     * 已适配列表
+     */
     private var adaptations: ArrayList<String> = ArrayList()
     private lateinit var adapter: RequestsAdapter
     private lateinit var number: TextView
@@ -125,7 +135,7 @@ class RequestFragment : Fragment() {
 
             checked.add(false)
         }
-}
+    }
 
     private fun parser(){
         val xml = context!!.resources.getXml(R.xml.appfilter)
@@ -135,8 +145,6 @@ class RequestFragment : Fragment() {
                 when(type){
                     XmlPullParser.START_TAG ->{
                         if (xml.name == "item"){
-//                            Log.e("6666666",xml.getAttributeValue(0))
-//                            Log.e("6666666",xml.getAttributeValue(1))
 
                             val pkgActivity = xml.getAttributeValue(0)
                             if (pkgActivity.indexOf("{")+1<pkgActivity.indexOf("/")){
@@ -179,6 +187,7 @@ class RequestFragment : Fragment() {
     }
 
     fun getMessage(): String{
+        message.clear()
         for ((index,value) in adapter.getSelect().withIndex()){
             if (value){
 
@@ -195,10 +204,6 @@ class RequestFragment : Fragment() {
         private val HIDE_HEIGHT = 40
         private var scrolledInstance = 0
         private var toolbarVisible = true
-
-        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-        }
 
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)

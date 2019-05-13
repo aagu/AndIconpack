@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fafafa"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     tools:context=".fragment.HomeFragment">
 
@@ -60,8 +62,8 @@
                     android:id="@+id/iconText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:paddingTop="6dp"
+                    android:textSize="14sp"
+                    android:paddingTop="8dp"
                     android:paddingBottom="2dp"
                     android:paddingStart="10dp"
                     android:text="图标"
@@ -98,8 +100,8 @@
                     android:id="@+id/newText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
-                    android:paddingTop="6dp"
+                    android:textSize="14sp"
+                    android:paddingTop="8dp"
                     android:paddingBottom="2dp"
                     android:paddingStart="10dp"
                     android:text="新增"
@@ -120,15 +122,123 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/other"
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="22sp"
-            android:gravity="center"
-            android:padding="36dp"
-            android:text="这里界面随意编写\n↓↓↓↓↓↓" />
+            android:layout_height="170dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="2dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_card_main_3_title"
+                    style="@style/TextAppearance.AppCompat.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="请为此应用评分"
+                    android:textColor="@color/black_text" />
+
+                <TextView
+                    android:id="@+id/tv_card_main3_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/tv_card_main_3_title"
+                    android:layout_toStartOf="@+id/img_star"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="如果觉得海星，请给它5颗星" />
+
+                <TextView
+                    android:id="@+id/tv_card_main3_details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@id/tv_card_main3_subtitle"
+                    android:layout_marginStart="16dp"
+                    android:layout_toStartOf="@+id/img_star"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="您的评价很重要，点击下方跳转评分"
+                    android:textColor="@color/text_color" />
+
+                <View
+                    android:id="@+id/view_card_main3_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@id/tv_card_main3_details"
+                    android:layout_marginTop="8dp"
+                    android:background="?attr/colorPrimaryDark" />
+
+                <LinearLayout
+                    android:id="@+id/ll_card_main3_rate"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@id/view_card_main3_line"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:orientation="horizontal"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_star_border_black_24dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_star_border_black_24dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_star_border_black_24dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_star_border_black_24dp" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_star_border_black_24dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_star"
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="centerCrop" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
 
     </LinearLayout>
 
