@@ -33,7 +33,7 @@ dependencies {
     implementation 'org.jetbrains.anko:anko-commons:0.10.5'
     implementation 'com.github.donkingliang:HeaderViewAdapter:1.2.2'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation 'jp.wasabeef:glide-transformations:3.3.0'
+    implementation 'jp.wasabeef:glide-transformations:4.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

@@ -79,13 +79,16 @@ class IconsFragment : Fragment() {
                 when(type){
                     XmlPullParser.START_TAG ->{
                         if (xml.name == "item"){
-//                            Log.e("6666666",xml.getAttributeValue(0))
-//                            Log.e("6666666",xml.getAttributeValue(1))
-
-                            val drawableString = xml.getAttributeValue(0)
-                            val drawableName = xml.getAttributeValue(1)
-                            val drawableId = context!!.resources.getIdentifier(drawableString,"drawable",context!!.packageName)
-                            iconsList.add(IconsBean(drawableId,drawableName))
+                            if (xml.attributeCount == 1){
+                                val drawableString = xml.getAttributeValue(0)
+                                val drawableId = context!!.resources.getIdentifier(drawableString,"drawable",context!!.packageName)
+                                iconsList.add(IconsBean(drawableId,drawableString))
+                            }else{
+                                val drawableString = xml.getAttributeValue(0)
+                                val drawableName = xml.getAttributeValue(1)
+                                val drawableId = context!!.resources.getIdentifier(drawableString,"drawable",context!!.packageName)
+                                iconsList.add(IconsBean(drawableId,drawableName))
+                            }
                         }
                     }
                     XmlPullParser.TEXT ->{
