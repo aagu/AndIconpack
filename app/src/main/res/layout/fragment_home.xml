@@ -178,6 +178,7 @@
                     android:id="@+id/view_card_main3_line"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
+                    android:layout_toStartOf="@+id/img_star"
                     android:layout_below="@id/tv_card_main3_details"
                     android:layout_marginTop="8dp"
                     android:background="?attr/colorPrimaryDark" />
