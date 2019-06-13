@@ -7,10 +7,17 @@ import android.view.ViewGroup
 import org.andcreator.iconpack.bean.LauncherItem
 import org.andcreator.iconpack.R
 import org.andcreator.iconpack.holder.LauncherHolder
+import org.andcreator.iconpack.view.FastScrollRecyclerView
+import java.util.*
+import kotlin.collections.ArrayList
 
 class LauncherAdapter(private val context: Context,
                       private val launchers: ArrayList<LauncherItem>,
-                      private val listener: LauncherHolder.OnLauncherClickListener) : RecyclerView.Adapter<LauncherHolder>() {
+                      private val listener: LauncherHolder.OnLauncherClickListener): RecyclerView.Adapter<LauncherHolder>(), FastScrollRecyclerView.SectionedAdapter {
+
+    override fun getSectionName(position: Int): String {
+        return launchers[position].name.substring(0, 1).toUpperCase(Locale.ENGLISH)
+    }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): LauncherHolder {
         val inflater = LayoutInflater.from(p0.context)

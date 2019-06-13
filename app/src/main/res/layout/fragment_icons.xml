@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#fafafa"
     tools:context=".fragment.IconsFragment">
 
@@ -13,18 +14,16 @@
         android:layout_gravity="center"
         android:indeterminate="true"/>
 
-    <android.support.v7.widget.RecyclerView
+    <org.andcreator.iconpack.view.FastScrollRecyclerView
         android:id="@+id/recyclerIcons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fafafa"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
-
-    <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
-        android:id="@+id/recyclerScroller"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="end" />
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:fastScrollHideDelay="1200"
+        app:fastScrollAlwaysEnabled="false"
+        app:fastScrollPopupBackgroundColor="?attr/colorAccent"
+        app:fastScrollPopupTextColor="@color/white" />
 
 </FrameLayout>

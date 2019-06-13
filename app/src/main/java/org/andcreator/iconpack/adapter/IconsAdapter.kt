@@ -9,9 +9,14 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import org.andcreator.iconpack.R
 import org.andcreator.iconpack.bean.IconsBean
+import org.andcreator.iconpack.view.FastScrollRecyclerView
 
 class IconsAdapter(private val context: Context,
-                   private var dataList: ArrayList<IconsBean>) : RecyclerView.Adapter<IconsAdapter.IconsHolder>() {
+                   private var dataList: ArrayList<IconsBean>): RecyclerView.Adapter<IconsAdapter.IconsHolder>(), FastScrollRecyclerView.SectionedAdapter {
+
+    override fun getSectionName(position: Int): String {
+        return dataList[position].category
+    }
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): IconsHolder {
         return IconsHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_icons, p0, false))

@@ -101,8 +101,6 @@ class ApplyFragment : Fragment() {
         })
         recyclerLaunchers.adapter = adapter
 
-        recyclerScroller.attachRecyclerView(recyclerLaunchers)
-
         doAsync {
             getLaunchers()
             uiThread {

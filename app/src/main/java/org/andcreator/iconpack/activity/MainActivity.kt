@@ -32,6 +32,7 @@ import org.andcreator.iconpack.util.ColorUtil
 import org.andcreator.iconpack.util.DisplayUtil
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.andcreator.iconpack.util.Utils
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.xmlpull.v1.XmlPullParser
@@ -196,6 +197,9 @@ class MainActivity : AppCompatActivity() {
                         sendIntent.type = "text/plain"
                         sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                         startActivity(Intent.createChooser(sendIntent,"发送给.."))
+
+                        Toast.makeText(this,"请发送Mail，邮箱账号已复制到剪贴板",Toast.LENGTH_SHORT).show()
+                        Utils.copy(resources.getString(R.string.mail), this)
                     }else{
                         Snackbar.make(fab,"没有选中任何应用程序",Snackbar.LENGTH_SHORT).show()
                     }

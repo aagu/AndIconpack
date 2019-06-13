@@ -4,6 +4,26 @@
 
     <string name="extraapp">com.momocode.shortcuts</string>
 
+    <string name="home_title">Welcome to And Marshmallow</string>
+    <string name="home_subtitle">这里是 Marshmallow, Material Design</string>
+
+    <!-- 这里可以改为捐赠信息 -->
+    <!-- home_link_string: 请求捐赠的一句话 -->
+    <!-- home_link：捐赠链接 -->
+    <string name="home_link_string">这款仪表盘可以被任何人使用并删除这段文字\n开源地址：https://github.com/hujincan/AndIconpack</string>
+    <string name="home_link">https://github.com/hujincan/AndIconpack</string>
+
+    <!-- 新增图标数量 -->
+    <string name="new_icons">40</string>
+
+    <!-- 作者信息 -->
+    <string name="designer_name">And</string>
+    <string name="designer_message">图标包创作者</string>
+    <string name="mail">hujincan15369@Gmail.com</string>
+
+    <!-- 更多信息前往main/java/packageName/AboutFragment.java 修改 -->
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="gnl_title">Google Now Launcher is NOT Compatible</string>

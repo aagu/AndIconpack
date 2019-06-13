@@ -47,7 +47,6 @@ class IconsFragment : Fragment() {
         recyclerIcons.layoutManager = GridLayoutManager(context,4)
         adapter = IconsAdapter(context!!,iconsList)
         recyclerIcons.adapter = adapter
-        recyclerScroller.attachRecyclerView(recyclerIcons)
 
         adapter.setClickListener(object : IconsAdapter.OnItemClickListener{
             override fun onClick(icon: Int, name: String) {
@@ -74,20 +73,26 @@ class IconsFragment : Fragment() {
         iconsList.clear()
         val xml = context!!.resources.getXml(R.xml.drawable)
         var type = xml.eventType
+        var category = "All"
         try {
             while (type != XmlPullParser.END_DOCUMENT){
                 when(type){
                     XmlPullParser.START_TAG ->{
+
+                        if (xml.name == "category" && xml.attributeCount == 1){
+                            category = xml.getAttributeValue(0)
+                        }
+
                         if (xml.name == "item"){
                             if (xml.attributeCount == 1){
                                 val drawableString = xml.getAttributeValue(0)
                                 val drawableId = context!!.resources.getIdentifier(drawableString,"drawable",context!!.packageName)
-                                iconsList.add(IconsBean(drawableId,drawableString))
+                                iconsList.add(IconsBean(category, drawableId,drawableString))
                             }else{
                                 val drawableString = xml.getAttributeValue(0)
                                 val drawableName = xml.getAttributeValue(1)
                                 val drawableId = context!!.resources.getIdentifier(drawableString,"drawable",context!!.packageName)
-                                iconsList.add(IconsBean(drawableId,drawableName))
+                                iconsList.add(IconsBean(category, drawableId,drawableName))
                             }
                         }
                     }

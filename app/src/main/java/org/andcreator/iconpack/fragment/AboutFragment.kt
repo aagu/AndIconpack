@@ -42,7 +42,6 @@ class AboutFragment : Fragment() {
         recyclerAbout.layoutManager = LinearLayoutManager(context!!)
         adapter = AboutAdapter(context!!,credits)
         recyclerAbout.adapter = adapter
-        recyclerScroller.attachRecyclerView(recyclerAbout)
 
         doAsync {
             loadData()
@@ -57,7 +56,14 @@ class AboutFragment : Fragment() {
 
     private fun loadData(){
         credits.clear()
-        credits.add(AboutBean("And","图标包创作者",R.drawable.author_create,R.drawable.logo_background, arrayListOf("Google+","Dribbble","Coolapk"), arrayListOf("http://bubbble.org","http://bubbble.org","http://bubbble.org")))
-        credits.add(AboutBean("And","仪表盘开发者",R.drawable.author_and,R.drawable.material_background, arrayListOf("Instagram","Dribbble","Coolapk"), arrayListOf("https://www.instagram.com/andrewmartin791/","https://dribbble.com/hawvuking","http://www.coolapk.com/u/620606")))
+        credits.add(AboutBean(resources.getString(R.string.designer_name),resources.getString(R.string.designer_message),
+            R.drawable.author_create,R.drawable.logo_background,
+            arrayListOf("Google+","Dribbble","Coolapk"),
+            arrayListOf("http://bubbble.org","http://bubbble.org","http://bubbble.org")))
+
+        credits.add(AboutBean("And","仪表盘开发者",
+            R.drawable.author_and,R.drawable.material_background,
+            arrayListOf("Instagram","Dribbble","Coolapk"),
+            arrayListOf("https://www.instagram.com/andrewmartin791/","https://dribbble.com/hawvuking","http://www.coolapk.com/u/620606")))
     }
 }

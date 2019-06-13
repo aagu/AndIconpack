@@ -8,14 +8,11 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import org.andcreator.iconpack.R
-import com.donkingliang.headerviewadapter.adapter.HeaderViewAdapter
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -48,8 +45,9 @@ class RequestFragment : Fragment() {
      */
     private var adaptations: ArrayList<String> = ArrayList()
     private lateinit var adapter: RequestsAdapter
-    private lateinit var number: TextView
     private val message = StringBuilder()
+
+    private var waysAdaptions = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,16 +65,8 @@ class RequestFragment : Fragment() {
     private fun initView(){
         recyclerApps.layoutManager = LinearLayoutManager(context!!)
         adapter = RequestsAdapter(context!!,appsList,checked)
-        val head = LayoutInflater.from(activity).inflate(R.layout.header_requests, recyclerApps, false)
-        number = head.findViewById(R.id.number)
-        val selectAll: ImageView = head.findViewById(R.id.selectAll)
-        selectAll.setOnClickListener {
-            adapter.selectAll()
-        }
 
-        val headView = HeaderViewAdapter(adapter)
-        headView.addHeaderView(head)
-        recyclerApps.adapter = headView
+        recyclerApps.adapter = adapter
 
         recyclerApps.addOnScrollListener(object : HideScrollListener() {
 
@@ -89,18 +79,17 @@ class RequestFragment : Fragment() {
                 if (loading.visibility == View.VISIBLE){
                     loading.visibility = View.GONE
                 }
-                headView.notifyDataSetChanged()
-                number.text = "未适配 "+appsList.size+"个"
+                adapter.notifyDataSetChanged()
 
             }
         }
-        recyclerScroller.attachRecyclerView(recyclerApps)
 
     }
 
     private fun loadData(){
         appsList.clear()
         message.clear()
+        waysAdaptions = 0
         val pm = context!!.packageManager
         val mainIntent = Intent(Intent.ACTION_MAIN,null)
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -113,6 +102,7 @@ class RequestFragment : Fragment() {
             val pkgName = reInfo.activityInfo.packageName // 获得应用程序的包名
             for (packageName: String in adaptations){
                 if (packageName == pkgName){
+                    waysAdaptions++
                     isHave = true
                     break
                 }
@@ -131,10 +121,14 @@ class RequestFragment : Fragment() {
                 activityName
             )
             // 创建一个AppInfo对象，并赋值
-            appsList.add(RequestsBean(icon,appLabel,pkgName,activityName)) // 添加至列表中
+            appsList.add(RequestsBean(icon,appLabel,pkgName,activityName,waysAdaptions,appsList.size,0)) // 添加至列表中
 
             checked.add(false)
         }
+
+        appsList.add(0, RequestsBean(null,"",null,null,waysAdaptions,appsList.size,1))
+        Log.e("不可能是：",waysAdaptions.toString())
+
     }
 
     private fun parser(){
@@ -192,7 +186,7 @@ class RequestFragment : Fragment() {
             if (value){
 
                 message.append("<!-- ${appsList[index].name} -->\r\n")
-                message.append("<item component=\"ComponentInfo{${appsList[index].pagName}/${appsList[index].activityName}}\" drawable=\"${appsList[index].name.toLowerCase().replace(" ", "_")}\" />")
+                message.append("<item component=\"ComponentInfo{${appsList[index].pagName}/${appsList[index].activityName}}\" drawable=\"${appsList[index].name?.toLowerCase()?.replace(" ", "_")}\" />")
                 message.append("\r\n")
             }
         }

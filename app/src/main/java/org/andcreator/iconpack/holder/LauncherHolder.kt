@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
@@ -52,11 +53,11 @@ class LauncherHolder(itemView: View, private var listener: OnLauncherClickListen
         if (isInstalled(context,launcher.isInstalled,launcher.packageName)){
             launcherLogo.colorFilter = null
             launcherName.setBackgroundColor(launcher.launcherColor)
-            launcherName.setTextColor(context.resources.getColor(R.color.white))
+            launcherName.setTextColor(ContextCompat.getColor(context, R.color.white))
         }else{
             launcherLogo.colorFilter = bnwFilter()
             launcherName.setBackgroundColor(Color.TRANSPARENT)
-            launcherName.setTextColor(context.resources.getColor(R.color.text_color))
+            launcherName.setTextColor(ContextCompat.getColor(context, R.color.text_color))
         }
     }
 
