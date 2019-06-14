@@ -126,7 +126,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
             checked.add(false)
         }
 
-        appsList.add(0, RequestsBean(null," ",null,null,waysAdaptions,appsList.size,1))
+        appsList.add(0, RequestsBean(null," ",null,null,appsList.size,waysAdaptions,1))
         Log.e("不可能是：",waysAdaptions.toString())
 
     }
