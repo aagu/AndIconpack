@@ -121,7 +121,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
                 activityName
             )
             // 创建一个AppInfo对象，并赋值
-            appsList.add(RequestsBean(icon,appLabel,pkgName,activityName,waysAdaptions,appsList.size,0)) // 添加至列表中
+            appsList.add(RequestsBean(icon,appLabel,pkgName,activityName,appsList.size,waysAdaptions, 0)) // 添加至列表中
 
             checked.add(false)
         }
