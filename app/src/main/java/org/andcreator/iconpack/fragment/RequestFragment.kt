@@ -5,9 +5,9 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.ResolveInfo
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -30,7 +30,7 @@ import kotlin.collections.ArrayList
  * A simple [Fragment] subclass.
  *
  */
-class RequestFragment : Fragment() {
+class RequestFragment : androidx.fragment.app.Fragment() {
 
     /**
      * 未适配列表
@@ -63,7 +63,7 @@ class RequestFragment : Fragment() {
     }
 
     private fun initView(){
-        recyclerApps.layoutManager = LinearLayoutManager(context!!)
+        recyclerApps.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context!!)
         adapter = RequestsAdapter(context!!,appsList,checked)
 
         recyclerApps.adapter = adapter
@@ -126,7 +126,7 @@ class RequestFragment : Fragment() {
             checked.add(false)
         }
 
-        appsList.add(0, RequestsBean(null,"",null,null,waysAdaptions,appsList.size,1))
+        appsList.add(0, RequestsBean(null," ",null,null,waysAdaptions,appsList.size,1))
         Log.e("不可能是：",waysAdaptions.toString())
 
     }
@@ -194,12 +194,12 @@ class RequestFragment : Fragment() {
     }
 
     //滑动监听
-    internal open inner class HideScrollListener : RecyclerView.OnScrollListener() {
+    internal open inner class HideScrollListener : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
         private val HIDE_HEIGHT = 40
         private var scrolledInstance = 0
         private var toolbarVisible = true
 
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
             if (toolbarVisible && dy > 0 || !toolbarVisible && dy < 0) {
                 //recycler向上滚动时dy为正，向下滚动时dy为负数

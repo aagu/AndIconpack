@@ -1,8 +1,8 @@
 package org.andcreator.iconpack.adapter
 
 import android.content.Context
-import android.support.v7.widget.AppCompatCheckBox
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.widget.AppCompatCheckBox
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,15 +19,19 @@ import kotlin.collections.ArrayList
 
 class RequestsAdapter(private val context: Context,
                       private var dataList: ArrayList<RequestsBean>,
-                      private var checkRead: ArrayList<Boolean>) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), FastScrollRecyclerView.SectionedAdapter {
+                      private var checkRead: ArrayList<Boolean>) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>(), FastScrollRecyclerView.SectionedAdapter {
 
     override fun getSectionName(position: Int): String {
-        return dataList[position].name!!.substring(0, 1).toUpperCase(Locale.ENGLISH)
+        return if (position > 0){
+            dataList[position].name!!.substring(0, 1).toUpperCase(Locale.ENGLISH)
+        }else{
+            ""
+        }
     }
 
     private var isSelect = false
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         when (p1){
             0 ->{
                 return RequestHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_app_to_request, p0, false))
@@ -49,7 +53,7 @@ class RequestsAdapter(private val context: Context,
         return dataList[position].type
     }
 
-    override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
+    override fun onBindViewHolder(p0: androidx.recyclerview.widget.RecyclerView.ViewHolder, p1: Int) {
 
         val bean = dataList[p1]
 
@@ -102,7 +106,7 @@ class RequestsAdapter(private val context: Context,
         return checkRead
     }
 
-    class RequestHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class RequestHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView){
 
         var imgIcon: ImageView = itemView.findViewById(R.id.imgIcon)
         var txtName: TextView = itemView.findViewById(R.id.txtName)
@@ -111,7 +115,7 @@ class RequestsAdapter(private val context: Context,
 
     }
 
-    class RequestHolderHead(itemView: View) : RecyclerView.ViewHolder(itemView){
+    class RequestHolderHead(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView){
         var adaptation: TextView = itemView.findViewById(R.id.adaptation)
         var notAdaptation: TextView = itemView.findViewById(R.id.notAdaptation)
         var selectAll: ImageButton = itemView.findViewById(R.id.selectAll)

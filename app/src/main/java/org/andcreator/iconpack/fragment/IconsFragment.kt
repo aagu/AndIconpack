@@ -3,8 +3,8 @@ package org.andcreator.iconpack.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +25,7 @@ import java.io.IOException
  * A simple [Fragment] subclass.
  *
  */
-class IconsFragment : Fragment() {
+class IconsFragment : androidx.fragment.app.Fragment() {
 
     private val iconsList = ArrayList<IconsBean>()
     private lateinit var adapter: IconsAdapter
@@ -44,7 +44,7 @@ class IconsFragment : Fragment() {
     }
 
     private fun initView(){
-        recyclerIcons.layoutManager = GridLayoutManager(context,4)
+        recyclerIcons.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 4)
         adapter = IconsAdapter(context!!,iconsList)
         recyclerIcons.adapter = adapter
 

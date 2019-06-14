@@ -5,8 +5,8 @@ import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.RecyclerView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -17,7 +17,7 @@ import org.andcreator.iconpack.R
 import org.andcreator.iconpack.bean.LauncherItem
 import org.andcreator.iconpack.util.Utils
 
-class LauncherHolder(itemView: View, private var listener: OnLauncherClickListener) : RecyclerView.ViewHolder(itemView) {
+class LauncherHolder(itemView: View, private var listener: OnLauncherClickListener) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
     private lateinit var launcher: LauncherItem
     private val launcherLogo = itemView.findViewById<ImageView>(R.id.launcherLogo)

@@ -2,7 +2,7 @@ package org.andcreator.iconpack.fragment
 
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import android.widget.Toast
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.xmlpull.v1.XmlPullParser
@@ -25,7 +25,7 @@ import java.io.IOException
  * A simple [Fragment] subclass.
  *
  */
-class HomeFragment : Fragment() {
+class HomeFragment : androidx.fragment.app.Fragment() {
 
     private var adaptations = 0
 

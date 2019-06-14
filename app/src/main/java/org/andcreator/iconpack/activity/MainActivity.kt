@@ -9,18 +9,18 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.FileProvider
-import android.support.v4.view.ViewPager
-import android.support.v4.view.animation.FastOutLinearInInterpolator
-import android.support.v4.view.animation.LinearOutSlowInInterpolator
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.snackbar.Snackbar
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.viewpager.widget.ViewPager
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Toast
@@ -87,13 +87,13 @@ class MainActivity : AppCompatActivity() {
         tab.setSelectedTabIndicatorColor(ContextCompat.getColor(this@MainActivity,R.color.white))
 
         appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener(){
-            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?,i: Int,max: Int) {
+            override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?, i: Int, max: Int) {
                 tab.tabTextColors = ColorStateList.valueOf(ColorUtil.getColor(ContextCompat.getColor(this@MainActivity,R.color.white),ContextCompat.getColor(this@MainActivity,R.color.text_color),i.toFloat(),max.toFloat()))
                 tab.setSelectedTabIndicatorColor(ColorUtil.getColor(ContextCompat.getColor(this@MainActivity,R.color.colorPrimaryDark),ContextCompat.getColor(this@MainActivity,R.color.text_color),i.toFloat(),max.toFloat()))
             }
         })
 
-        pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        pager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener{
             override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
 
             }
@@ -201,11 +201,13 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this,"请发送Mail，邮箱账号已复制到剪贴板",Toast.LENGTH_SHORT).show()
                         Utils.copy(resources.getString(R.string.mail), this)
                     }else{
-                        Snackbar.make(fab,"没有选中任何应用程序",Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(fab,"没有选中任何应用程序",
+                            Snackbar.LENGTH_SHORT).show()
                     }
 
                 }else{
-                    Snackbar.make(fab,"请到设置授予存储空间权限",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(fab,"请到设置授予存储空间权限",
+                        Snackbar.LENGTH_SHORT).show()
                 }
             }
         }
@@ -268,7 +270,7 @@ class MainActivity : AppCompatActivity() {
         }
     }*/
 
-    private fun setupViewPager(viewPager: ViewPager) {
+    private fun setupViewPager(viewPager: androidx.viewpager.widget.ViewPager) {
         adapter.addFragment(HomeFragment(),"主页")
         adapter.addFragment(IconsFragment(),"图标")
         adapter.addFragment(RequestFragment(),"图标适配")
@@ -281,12 +283,12 @@ class MainActivity : AppCompatActivity() {
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    inner class SectionsPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
+    inner class SectionsPagerAdapter (fm: androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fm) {
 
-        private val mFragmentList = ArrayList<Fragment>()
+        private val mFragmentList = ArrayList<androidx.fragment.app.Fragment>()
         private val mFragmentTitleList = ArrayList<String>()
 
-        override fun getItem(position: Int): Fragment {
+        override fun getItem(position: Int): androidx.fragment.app.Fragment {
             return mFragmentList[position]
         }
 
@@ -294,7 +296,7 @@ class MainActivity : AppCompatActivity() {
             return mFragmentList.size
         }
 
-        fun addFragment(fragment: Fragment, title: String) {
+        fun addFragment(fragment: androidx.fragment.app.Fragment, title: String) {
             mFragmentList.add(fragment)
             mFragmentTitleList.add(title)
         }
@@ -303,7 +305,7 @@ class MainActivity : AppCompatActivity() {
             return mFragmentTitleList[position]
         }
 
-        fun getFragment(position: Int): Fragment {
+        fun getFragment(position: Int): androidx.fragment.app.Fragment {
             return mFragmentList[position]
         }
     }

@@ -1,7 +1,7 @@
 package org.andcreator.iconpack.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import org.andcreator.iconpack.bean.LauncherItem
@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
 
 class LauncherAdapter(private val context: Context,
                       private val launchers: ArrayList<LauncherItem>,
-                      private val listener: LauncherHolder.OnLauncherClickListener): RecyclerView.Adapter<LauncherHolder>(), FastScrollRecyclerView.SectionedAdapter {
+                      private val listener: LauncherHolder.OnLauncherClickListener): androidx.recyclerview.widget.RecyclerView.Adapter<LauncherHolder>(), FastScrollRecyclerView.SectionedAdapter {
 
     override fun getSectionName(position: Int): String {
         return launchers[position].name.substring(0, 1).toUpperCase(Locale.ENGLISH)

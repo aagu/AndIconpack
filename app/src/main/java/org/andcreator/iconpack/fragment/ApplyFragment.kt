@@ -4,11 +4,11 @@ package org.andcreator.iconpack.fragment
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +29,7 @@ import java.util.ArrayList
  * A simple [Fragment] subclass.
  *
  */
-class ApplyFragment : Fragment() {
+class ApplyFragment : androidx.fragment.app.Fragment() {
 
     private val launchers = ArrayList<LauncherItem>()
     private lateinit var adapter: LauncherAdapter
@@ -48,8 +48,8 @@ class ApplyFragment : Fragment() {
     }
 
     private fun initView(){
-        recyclerLaunchers.layoutManager = GridLayoutManager(context,3)
-        recyclerLaunchers.itemAnimator = DefaultItemAnimator()
+        recyclerLaunchers.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
+        recyclerLaunchers.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
 
         adapter = LauncherAdapter(context!!,launchers,object : LauncherHolder.OnLauncherClickListener{
             override fun onLauncherClick(item: LauncherItem) {

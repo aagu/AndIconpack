@@ -1,6 +1,6 @@
 package org.andcreator.iconpack.activity
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import org.andcreator.iconpack.R

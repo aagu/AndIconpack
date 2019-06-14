@@ -188,7 +188,7 @@
             android:theme="@style/DialogActivity"/>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="org.andcreator.iconpack.provider"
             android:exported="false"
             android:grantUriPermissions="true">

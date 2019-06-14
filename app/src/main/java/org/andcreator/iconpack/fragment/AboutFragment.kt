@@ -2,8 +2,8 @@ package org.andcreator.iconpack.fragment
 
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,7 @@ import org.jetbrains.anko.uiThread
  * A simple [Fragment] subclass.
  *
  */
-class AboutFragment : Fragment() {
+class AboutFragment : androidx.fragment.app.Fragment() {
 
     private val credits = ArrayList<AboutBean>()
     private lateinit var adapter: AboutAdapter
@@ -39,7 +39,7 @@ class AboutFragment : Fragment() {
     }
 
     private fun initView(){
-        recyclerAbout.layoutManager = LinearLayoutManager(context!!)
+        recyclerAbout.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context!!)
         adapter = AboutAdapter(context!!,credits)
         recyclerAbout.adapter = adapter
 
