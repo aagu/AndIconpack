@@ -63,7 +63,9 @@ class RequestsAdapter(private val context: Context,
                 Glide.with(context).load(bean.icon).into(holder.imgIcon)
                 holder.txtName.text = bean.name
 
-                holder.chkSelected.isChecked = checkRead[p1-1]
+                if (p1 > 0){
+                    holder.chkSelected.isChecked = checkRead[p1-1]
+                }
 
                 holder.requestCard.setOnClickListener {
                     checkRead[p1] = !p0.chkSelected.isChecked
