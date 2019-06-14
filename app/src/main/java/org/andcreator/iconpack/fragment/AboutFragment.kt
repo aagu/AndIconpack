@@ -63,7 +63,7 @@ class AboutFragment : androidx.fragment.app.Fragment() {
 
         credits.add(AboutBean("And","仪表盘开发者",
             R.drawable.author_and,R.drawable.material_background,
-            arrayListOf("Instagram","Dribbble","Coolapk"),
-            arrayListOf("https://www.instagram.com/andrewmartin791/","https://dribbble.com/hawvuking","http://www.coolapk.com/u/620606")))
+            arrayListOf("Github","Dribbble","Coolapk"),
+            arrayListOf("https://github.com/hujincan","https://dribbble.com/hawvuking","http://www.coolapk.com/u/620606")))
     }
 }

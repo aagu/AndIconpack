@@ -233,7 +233,7 @@
 
                 <ImageView
                     android:id="@+id/img_star"
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:scaleType="centerCrop" />
@@ -247,6 +247,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/pink"
+            android:drawablePadding="9dp"
+            android:drawableEnd="@drawable/ic_launch_black_24dp"
             android:textSize="16sp"
             android:padding="16dp"
             android:background="?attr/selectableItemBackground"
