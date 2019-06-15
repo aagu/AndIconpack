@@ -185,7 +185,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
         for ((index,value) in adapter.getSelect().withIndex()){
             if (value){
 
-                message.append("<!-- ${appsList[index].name} -->\r\n")
+                message.append("<!-- ${appsList[index+1].name} -->\r\n")
                 message.append("<item component=\"ComponentInfo{${appsList[index].pagName}/${appsList[index].activityName}}\" drawable=\"${appsList[index].name?.toLowerCase()?.replace(" ", "_")}\" />")
                 message.append("\r\n")
             }
