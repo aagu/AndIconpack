@@ -68,7 +68,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
 
     private fun parser(){
         adaptations = 0
-        val xml = context!!.resources.getXml(R.xml.appfilter)
+        val xml = context!!.resources.getXml(R.xml.drawable)
         var type = xml.eventType
         try {
             while (type != XmlPullParser.END_DOCUMENT){
@@ -76,10 +76,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                     XmlPullParser.START_TAG ->{
                         if (xml.name == "item"){
 
-                            val pkgActivity = xml.getAttributeValue(0)
-                            if (pkgActivity.indexOf("{")+1<pkgActivity.indexOf("/")){
-                                adaptations++
-                            }
+                            adaptations++
                         }
                     }
                     XmlPullParser.TEXT ->{
