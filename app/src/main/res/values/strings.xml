@@ -10,11 +10,11 @@
     <!-- 这里可以改为捐赠信息 -->
     <!-- home_link_string: 请求捐赠的一句话 -->
     <!-- home_link：捐赠链接 -->
-    <string name="home_link_string">如果您能够捐赠 我将非常感谢</string>
-    <string name="home_link">https://qr.alipay.com/tsx09737qeblhmcqeb3fpe0</string>
+    <string name="home_link_string">访问开源地址</string>
+    <string name="home_link">https://github.com/hujincan/AndIconpack/</string>
 
     <!-- 新增图标数量 -->
-    <string name="new_icons">40</string>
+    <string name="new_icons">2</string>
 
     <!-- 作者信息 -->
     <string name="designer_name">And</string>

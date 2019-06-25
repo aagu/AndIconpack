@@ -2,55 +2,14 @@
 <resources>
     <version>1</version>
 
-	<!--<item drawable="图标文件名字(只能含有小写字母，下划线，数字，必须以字母开头)，不含后缀名" />-->
-
-    <category title="系统" />
-    <item drawable="ic_dialer"/>
-    <item drawable="ic_message"/>
-    <item drawable="ic_contacts"/>
-    <item drawable="ic_calendar"/>
-    <item drawable="ic_camera"/>
-    <item drawable="ic_calculator" />
-    <item drawable="ic_clock"/>
-    <item drawable="ic_download"/>
+    <!--title="分类,这里以首字母为例"-->
+    <!--<item drawable="图标文件名字(只能含有小写字母，下划线，数字，必须以字母开头)，不含后缀名" />-->
 
     <category title="谷歌"/>
-    <item drawable="ic_chrome"/>
-    <item drawable="ic_play_music"/>
-    <item drawable="ic_play_games"/>
-    <item drawable="ic_play_books"/>
-    <item drawable="ic_play_movie"/>
-    <item drawable="ic_play_store"/>
-    <item drawable="ic_docs"/>
-    <item drawable="ic_sheets"/>
-    <item drawable="ic_slides"/>
-    <item drawable="ic_drive"/>
-    <item drawable="ic_photos"/>
-    <item drawable="ic_plus"/>
-    <item drawable="ic_map"/>
-    <item drawable="ic_fitness"/>
-    <item drawable="ic_inbox"/>
-    <item drawable="ic_gmail"/>
-    <item drawable="ic_pinyin"/>
-    <item drawable="ic_keep"/>
-    <item drawable="ic_hangouts"/>
-    <item drawable="ic_youtube"/>
-    <item drawable="ic_translate"/>
-    <item drawable="ic_snapseed"/>
+    <item drawable="ic_chrome" name="Chrome" />
 
-    <category title="游戏" />
-
-    <categor title="社交"/>
-    <item drawable="ic_settings"/>
-
+    <!-- 仅作为演示 -->
     <categor title="All"/>
-    <item drawable="cm_gallery"/>
-    <item drawable="cm_music"/>
-    <item drawable="moto_camera"/>
-    <item drawable="cm_calendar"/>
-    <item drawable="cm_browser"/>
-    <item drawable="cm_browser_new"/>
-    <item drawable="cm_massage"/>
-    <item drawable="cm_massage_new"/>
-    <item drawable="cm_recorder"/>
+    <item drawable="ic_chrome" name="Chrome" />
+
 </resources>
