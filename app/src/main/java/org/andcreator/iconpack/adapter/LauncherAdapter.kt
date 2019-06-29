@@ -13,7 +13,7 @@ import kotlin.collections.ArrayList
 
 class LauncherAdapter(private val context: Context,
                       private val launchers: ArrayList<LauncherItem>,
-                      private val listener: LauncherHolder.OnLauncherClickListener): androidx.recyclerview.widget.RecyclerView.Adapter<LauncherHolder>(), FastScrollRecyclerView.SectionedAdapter {
+                      private val listener: LauncherHolder.OnLauncherClickListener): RecyclerView.Adapter<LauncherHolder>(), FastScrollRecyclerView.SectionedAdapter {
 
     override fun getSectionName(position: Int): String {
         return launchers[position].name.substring(0, 1).toUpperCase(Locale.ENGLISH)

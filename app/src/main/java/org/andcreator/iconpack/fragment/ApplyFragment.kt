@@ -48,10 +48,10 @@ class ApplyFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun initView(){
-        recyclerLaunchers.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 3)
-        recyclerLaunchers.itemAnimator = androidx.recyclerview.widget.DefaultItemAnimator()
+        recyclerLaunchers.layoutManager = GridLayoutManager(context, 3)
+        recyclerLaunchers.itemAnimator = DefaultItemAnimator()
 
-        adapter = LauncherAdapter(context!!,launchers,object : LauncherHolder.OnLauncherClickListener{
+        adapter = LauncherAdapter(context!!,launchers,object: LauncherHolder.OnLauncherClickListener{
             override fun onLauncherClick(item: LauncherItem) {
                 when(item.name){
                     "Google Now" ->{
@@ -60,13 +60,13 @@ class ApplyFragment : androidx.fragment.app.Fragment() {
                             .setTitle(resources.getString(R.string.gnl_title))
                             .setMessage(resources.getString(R.string.gnl_content))
                             .setPositiveButton(
-                            "下载"
+                                resources.getString(R.string.download)
                         ) { _, _ ->
                             val intent = Intent(Intent.ACTION_VIEW)
                             intent.data = Uri.parse(appLink)
                             startActivity(intent)
 
-                        }.setNeutralButton("取消"){_,_->
+                        }.setNeutralButton(resources.getString(R.string.cancel)){_,_->
 
                         }.show()
                     }
@@ -156,12 +156,13 @@ class ApplyFragment : androidx.fragment.app.Fragment() {
             .setTitle(launcher.name)
             .setMessage(dialogContent)
             .setPositiveButton(
-                "下载"
+                resources.getString(R.string.download)
             ) { _, _ ->
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(intentString)
                 startActivity(intent)
-            }.setNeutralButton("取消"){_,_->
+            }.setNeutralButton(
+                resources.getString(R.string.cancel)){_,_->
 
             }.show()
     }

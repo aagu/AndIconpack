@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">And 仪表盘</string>
+    <string name="app_name">And 图标包模板</string>
     <string name="action_settings">设置</string>
 
     <string name="extraapp">com.momocode.shortcuts</string>
@@ -24,24 +24,51 @@
     <!-- 更多信息前往main/java/packageName/AboutFragment.java 修改 -->
 
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="gnl_title">Google Now Launcher is NOT Compatible</string>
-    <string name="gnl_content">Google Now Launcher is NOT compatible with ANY Icon Packs. Please do
-        not rate the icon pack negatively for this reason. There is a solution that you can try for
-        yourself, but it requires the use of an external app. Would you like to download it?
+    <string name="no_store">没有可用的应用商店</string>
+
+    <string name="download">下载</string>
+    <string name="cancel">取消</string>
+    <string name="close">关闭</string>
+
+    <string name="send_mail_please">请发送Mail，邮箱账号已复制到剪贴板</string>
+    <string name="send_mail_to">发送至..</string>
+    <string name="no_choose_app">没有选中任何应用程序</string>
+    <string name="get_permission">请到设置授予存储空间权限</string>
+    <string name="need_permission">请转到设置授予权限，否则无法正常使用</string>
+
+    <!-- 主页 Tabs -->
+    <string name="home">主页</string>
+    <string name="icons">图标</string>
+    <string name="icon_adapter">图标适配</string>
+    <string name="apply">应用</string>
+    <string name="about">关于</string>
+
+    <string name="adapter">适配&#160;</string>
+    <string name="not_adapter">未适配&#160;</string>
+
+    <string name="developer">仪表盘开发者</string>
+    <string name="adapter_not">未适配0个</string>
+    <string name="adapter_number">适配0个</string>
+
+    <string name="for_app_star">请为此应用评分</string>
+    <string name="feel_good_a">如果觉得很棒，请给它5颗星</string>
+    <string name="feel_good_b">您的评价很重要，点击下方跳转评分</string>
+
+    <string name="new_icons_num">新增</string>
+
+    <string name="gnl_title">不兼容谷歌即时桌面</string>
+
+    <string name="gnl_content">谷歌即时桌面与图标包是不可兼容的，但请不要因此给予这个图标包负面的评价。有一个解决方法你可以尝试，但这需要使用到一个外部应用，你想要下载它吗?
     </string>
 
-    <string name="lg_dialog_content">We are sorry, but LG Home app is exclusive of LG devices, and
-        therefore it can not be downloaded from Google Play Store.
+    <string name="lg_dialog_content">非常抱歉，因为“LG HOME APP”是LG设备的专用应用，所以无法从谷歌应用商店上下载到它
     </string>
 
-    <string name="no_launcher_intent">Direct apply could not be completed for this launcher. Please apply the icon pack manually, in launcher settings.</string>
+    <string name="no_launcher_intent">无法在桌面上自动生成应用图标，请在桌面设置中手动设置</string>
     <!-- LauncherNotInstalled Dialog -->
-    <string name="lni_content">%1$s is currently not installed on your device.\nWould you like to
-        install it from the Google Play Store?
+    <string name="lni_content">%1$s 你的设备当前没有安装，\n你想要从谷歌应用商店上安装它吗？
     </string>
-    <string name="cm_dialog_content">%1$s is part of CyanogenMod (based) roms.\nWould you like to
-        install it on your device?
+    <string name="cm_dialog_content">%1$s 是CyanogenMod（based） Roms 的一部分，\n你想要将它下载到你的设备上吗？
     </string>
+
 </resources>

@@ -39,7 +39,7 @@ class AboutFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun initView(){
-        recyclerAbout.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context!!)
+        recyclerAbout.layoutManager = LinearLayoutManager(context!!)
         adapter = AboutAdapter(context!!,credits)
         recyclerAbout.adapter = adapter
 
@@ -61,7 +61,7 @@ class AboutFragment : androidx.fragment.app.Fragment() {
             arrayListOf("Google+","Dribbble","Coolapk"),
             arrayListOf("http://bubbble.org","http://bubbble.org","http://bubbble.org")))
 
-        credits.add(AboutBean("And","仪表盘开发者",
+        credits.add(AboutBean("And",resources.getString(R.string.developer),
             R.drawable.author_and,R.drawable.material_background,
             arrayListOf("Github","Dribbble","Coolapk"),
             arrayListOf("https://github.com/hujincan","https://dribbble.com/hawvuking","http://www.coolapk.com/u/620606")))

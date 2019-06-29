@@ -79,8 +79,8 @@ class RequestsAdapter(private val context: Context,
                     selectAll()
                 }
 
-                holder.notAdaptation.text = "未适配 "+bean.notAdaptation
-                holder.adaptation.text = "适配 "+bean.adaptation
+                holder.notAdaptation.text = context.resources.getString(R.string.not_adapter)+bean.notAdaptation
+                holder.adaptation.text = context.resources.getString(R.string.adapter)+bean.adaptation
             }
         }
     }

@@ -66,7 +66,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="2dp"
                     android:paddingStart="10dp"
-                    android:text="图标"
+                    android:text="@string/icons"
                     android:layout_toRightOf="@+id/iconsIcon"/>
 
                 <TextView
@@ -104,7 +104,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="2dp"
                     android:paddingStart="10dp"
-                    android:text="新增"
+                    android:text="@string/new_icons_num"
                     android:layout_toRightOf="@+id/newIcon"/>
 
                 <TextView
@@ -124,7 +124,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="170dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="4dp"
             android:layout_marginStart="4dp"
@@ -146,7 +146,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="请为此应用评分"
+                    android:text="@string/for_app_star"
                     android:textColor="@color/black_text" />
 
                 <TextView
@@ -159,7 +159,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="如果觉得海星，请给它5颗星" />
+                    android:text="@string/feel_good_a" />
 
                 <TextView
                     android:id="@+id/tv_card_main3_details"
@@ -171,7 +171,7 @@
                     android:layout_toStartOf="@+id/img_star"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="您的评价很重要，点击下方跳转评分"
+                    android:text="@string/feel_good_b"
                     android:textColor="@color/text_color" />
 
                 <View
@@ -186,7 +186,7 @@
                 <LinearLayout
                     android:id="@+id/ll_card_main3_rate"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="56dp"
                     android:layout_below="@id/view_card_main3_line"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
@@ -234,7 +234,9 @@
                 <ImageView
                     android:id="@+id/img_star"
                     android:layout_width="140dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignBottom="@+id/ll_card_main3_rate"
                     android:layout_alignParentEnd="true"
                     android:scaleType="centerCrop" />
 

@@ -12,7 +12,7 @@ import org.andcreator.iconpack.bean.IconsBean
 import org.andcreator.iconpack.view.FastScrollRecyclerView
 
 class IconsAdapter(private val context: Context,
-                   private var dataList: ArrayList<IconsBean>): androidx.recyclerview.widget.RecyclerView.Adapter<IconsAdapter.IconsHolder>(), FastScrollRecyclerView.SectionedAdapter {
+                   private var dataList: ArrayList<IconsBean>): RecyclerView.Adapter<IconsAdapter.IconsHolder>(), FastScrollRecyclerView.SectionedAdapter {
 
     override fun getSectionName(position: Int): String {
         return dataList[position].category
@@ -34,7 +34,7 @@ class IconsAdapter(private val context: Context,
         }
     }
 
-    class IconsHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView){
+    class IconsHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
         var icon: ImageView = itemView.findViewById(R.id.icons)
     }

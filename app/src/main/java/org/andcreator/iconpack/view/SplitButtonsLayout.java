@@ -31,8 +31,8 @@ public class SplitButtonsLayout extends LinearLayout {
         setOrientation(HORIZONTAL);
         if (isInEditMode()) {
             mButtonCount = 2;
-            addButton("Website", "https://www.jahirfiquitiva.me");
-            addButton("Google+", "https://www.google.com/+JahirFiquitivaJDev");
+            addButton("Website", "https://bubbble.org/");
+            addButton("Github+", "https://github.com/hujincan");
         }
     }
 

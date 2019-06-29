@@ -19,7 +19,7 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 
 
 class AboutAdapter(private val context: Context,
-                   private val credits: ArrayList<AboutBean>) : androidx.recyclerview.widget.RecyclerView.Adapter<AboutAdapter.AboutHolder>() {
+                   private val credits: ArrayList<AboutBean>) : RecyclerView.Adapter<AboutAdapter.AboutHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): AboutHolder {
         return AboutHolder(LayoutInflater.from(p0.context).inflate(R.layout.item_detailed_credit, p0, false))
@@ -78,7 +78,7 @@ class AboutAdapter(private val context: Context,
         context.startActivity(intent)
     }
 
-    class AboutHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView){
+    class AboutHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var banner: ImageView = itemView.findViewById(R.id.banner)
         var photo: CircleImageView = itemView.findViewById(R.id.photo)
         var title: TextView = itemView.findViewById(R.id.title)

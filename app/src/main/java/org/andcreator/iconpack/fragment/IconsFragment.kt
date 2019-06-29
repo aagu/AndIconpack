@@ -44,7 +44,7 @@ class IconsFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun initView(){
-        recyclerIcons.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, 4)
+        recyclerIcons.layoutManager = GridLayoutManager(context, 4)
         adapter = IconsAdapter(context!!,iconsList)
         recyclerIcons.adapter = adapter
 

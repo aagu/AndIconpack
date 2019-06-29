@@ -5,11 +5,14 @@ import android.graphics.Color
 import android.graphics.ColorFilter
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
+import android.util.Log
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.cardview.widget.CardView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Priority
 import com.bumptech.glide.request.RequestOptions
@@ -17,14 +20,16 @@ import org.andcreator.iconpack.R
 import org.andcreator.iconpack.bean.LauncherItem
 import org.andcreator.iconpack.util.Utils
 
-class LauncherHolder(itemView: View, private var listener: OnLauncherClickListener) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
+class LauncherHolder(itemView: View, private var listener: OnLauncherClickListener) : RecyclerView.ViewHolder(itemView) {
 
     private lateinit var launcher: LauncherItem
     private val launcherLogo = itemView.findViewById<ImageView>(R.id.launcherLogo)
     private val launcherName = itemView.findViewById<TextView>(R.id.launcherName)
 
     init {
-        itemView.setOnClickListener {
+        itemView.findViewById<CardView>(R.id.launcherCard).setOnClickListener {
+
+            Log.e("HolderClick", "HolderClick")
             this.listener.onLauncherClick(launcher)
         }
     }

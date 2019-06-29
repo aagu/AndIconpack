@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        pager.addOnPageChangeListener(object : androidx.viewpager.widget.ViewPager.OnPageChangeListener{
+        pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
             override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
 
             }
@@ -204,17 +204,17 @@ class MainActivity : AppCompatActivity() {
                             "$packageName.provider", file))
                         sendIntent.type = "text/plain"
                         sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        startActivity(Intent.createChooser(sendIntent,"发送给.."))
+                        startActivity(Intent.createChooser(sendIntent,resources.getString(R.string.send_mail_to)))
 
-                        Toast.makeText(this,"请发送Mail，邮箱账号已复制到剪贴板",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,resources.getString(R.string.send_mail_please),Toast.LENGTH_SHORT).show()
                         Utils.copy(resources.getString(R.string.mail), this)
                     }else{
-                        Snackbar.make(fab,"没有选中任何应用程序",
+                        Snackbar.make(fab,resources.getString(R.string.no_choose_app),
                             Snackbar.LENGTH_SHORT).show()
                     }
 
                 }else{
-                    Snackbar.make(fab,"请到设置授予存储空间权限",
+                    Snackbar.make(fab,resources.getString(R.string.get_permission),
                         Snackbar.LENGTH_SHORT).show()
                 }
             }
@@ -250,7 +250,7 @@ class MainActivity : AppCompatActivity() {
         when(requestCode){
             permissionCode ->{
                 if (grantResults.isNotEmpty() && grantResults[0] != PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(this,"请转到设置授予权限，否则无法正常使用", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,resources.getString(R.string.need_permission), Toast.LENGTH_SHORT).show()
                 }else{
                     permissionList.clear()
                     val wallpaperManager = WallpaperManager.getInstance(this)
@@ -278,12 +278,12 @@ class MainActivity : AppCompatActivity() {
         }
     }*/
 
-    private fun setupViewPager(viewPager: androidx.viewpager.widget.ViewPager) {
-        adapter.addFragment(HomeFragment(),"主页")
-        adapter.addFragment(IconsFragment(),"图标")
-        adapter.addFragment(RequestFragment(),"图标适配")
-        adapter.addFragment(ApplyFragment(),"应用")
-        adapter.addFragment(AboutFragment(),"关于")
+    private fun setupViewPager(viewPager: ViewPager) {
+        adapter.addFragment(HomeFragment(),resources.getString(R.string.home))
+        adapter.addFragment(IconsFragment(),resources.getString(R.string.icons))
+        adapter.addFragment(RequestFragment(),resources.getString(R.string.icon_adapter))
+        adapter.addFragment(ApplyFragment(),resources.getString(R.string.apply))
+        adapter.addFragment(AboutFragment(),resources.getString(R.string.about))
         viewPager.adapter = adapter
     }
 
@@ -291,12 +291,12 @@ class MainActivity : AppCompatActivity() {
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    inner class SectionsPagerAdapter (fm: androidx.fragment.app.FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fm) {
+    inner class SectionsPagerAdapter (fm: FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fm) {
 
-        private val mFragmentList = ArrayList<androidx.fragment.app.Fragment>()
+        private val mFragmentList = ArrayList<Fragment>()
         private val mFragmentTitleList = ArrayList<String>()
 
-        override fun getItem(position: Int): androidx.fragment.app.Fragment {
+        override fun getItem(position: Int): Fragment {
             return mFragmentList[position]
         }
 
@@ -304,7 +304,7 @@ class MainActivity : AppCompatActivity() {
             return mFragmentList.size
         }
 
-        fun addFragment(fragment: androidx.fragment.app.Fragment, title: String) {
+        fun addFragment(fragment: Fragment, title: String) {
             mFragmentList.add(fragment)
             mFragmentTitleList.add(title)
         }
@@ -313,7 +313,7 @@ class MainActivity : AppCompatActivity() {
             return mFragmentTitleList[position]
         }
 
-        fun getFragment(position: Int): androidx.fragment.app.Fragment {
+        fun getFragment(position: Int): Fragment {
             return mFragmentList[position]
         }
     }

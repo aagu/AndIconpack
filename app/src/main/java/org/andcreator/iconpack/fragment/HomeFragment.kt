@@ -107,7 +107,7 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context!!.startActivity(intent)
         } catch (e: Exception) {
-            Toast.makeText(context, "没有可用的应用商店", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, resources.getString(R.string.no_store), Toast.LENGTH_SHORT).show()
             e.printStackTrace()
         }
 

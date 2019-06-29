@@ -15,7 +15,7 @@
         android:drawableStart="@drawable/ic_insert_emoticon_black_24dp"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:text="适配0个"/>
+        android:text="@string/adapter_number"/>
 
     <TextView
         android:id="@+id/notAdaptation"
@@ -27,7 +27,7 @@
         android:drawableStart="@drawable/ic_mood_bad_black_24dp"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:text="未适配0个"/>
+        android:text="@string/adapter_not"/>
 
     <ImageButton
         android:id="@+id/selectAll"
