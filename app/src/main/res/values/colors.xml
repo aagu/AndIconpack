@@ -10,6 +10,7 @@
 
     <!-- 细节颜色 -->
     <color name="pink">#ec407a</color>
+    <color name="green">#00C853</color>
 
     <!-- 字体颜色 -->
     <color name="black_text">#222222</color>

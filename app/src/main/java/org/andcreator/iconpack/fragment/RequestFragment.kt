@@ -19,6 +19,8 @@ import org.jetbrains.anko.uiThread
 import org.andcreator.iconpack.adapter.RequestsAdapter
 import org.andcreator.iconpack.bean.RequestsBean
 import kotlinx.android.synthetic.main.fragment_request.*
+import org.andcreator.iconpack.util.DBHelper
+import org.jetbrains.anko.custom.async
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
@@ -44,7 +46,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
      * 已适配列表
      */
     private var adaptations: ArrayList<String> = ArrayList()
-    private lateinit var adapter: RequestsAdapter
+    lateinit var adapter: RequestsAdapter
     private val message = StringBuilder()
 
     private var waysAdaptions = 0
@@ -90,6 +92,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
         appsList.clear()
         message.clear()
         waysAdaptions = 0
+        val redPkg = DBHelper.getInstance(context!!).getRequested().map(RequestsBean::pagName)
         val pm = context!!.packageManager
         val mainIntent = Intent(Intent.ACTION_MAIN,null)
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -121,12 +124,16 @@ class RequestFragment : androidx.fragment.app.Fragment() {
                 activityName
             )
             // 创建一个AppInfo对象，并赋值
-            appsList.add(RequestsBean(icon,appLabel,pkgName,activityName,appsList.size,waysAdaptions, 0)) // 添加至列表中
+            if (!redPkg.contains(pkgName)) {
+                appsList.add(RequestsBean(0,icon,appLabel,pkgName,activityName,appsList.size,waysAdaptions, 0)) // 添加至列表中
+            } else {
+                appsList.add(RequestsBean(0,icon,appLabel,pkgName,activityName,appsList.size,waysAdaptions, 2)) // 添加至列表中
+            }
 
             checked.add(false)
         }
 
-        appsList.add(0, RequestsBean(null," ",null,null,appsList.size,waysAdaptions,1))
+        appsList.add(0, RequestsBean(0,null," ",null,null,appsList.size,waysAdaptions,1))
         Log.e("不可能是：",waysAdaptions.toString())
 
     }
@@ -161,6 +168,13 @@ class RequestFragment : androidx.fragment.app.Fragment() {
         }
     }
 
+    fun applied() {
+        doAsync {
+            uiThread {
+                adapter.deSelectAll()
+            }
+        }
+    }
 
     interface Callbacks {
         fun callback(position: Int)
@@ -188,6 +202,11 @@ class RequestFragment : androidx.fragment.app.Fragment() {
                 message.append("<!-- ${appsList[index+1].name} -->\r\n")
                 message.append("<item component=\"ComponentInfo{${appsList[index+1].pagName}/${appsList[index+1].activityName}}\" drawable=\"${appsList[index+1].name?.toLowerCase()?.replace(" ", "_")}\" />")
                 message.append("\r\n")
+                doAsync {
+                    val b = appsList[index+1]
+                    b.type = 2
+                    DBHelper.getInstance(context!!).insertOrUpdate(b)
+                }
             }
         }
         return message.toString()

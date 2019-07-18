@@ -13,6 +13,11 @@
     android:gravity="center_vertical"
     tools:ignore="Overdraw">
 
+    <View
+        android:id="@+id/view_tag"
+        android:layout_width="6dp"
+        android:layout_height="48dp" />
+
     <ImageView
         android:id="@+id/imgIcon"
         android:layout_width="64dp"

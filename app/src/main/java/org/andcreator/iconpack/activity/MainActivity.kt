@@ -208,6 +208,7 @@ class MainActivity : AppCompatActivity() {
 
                         Toast.makeText(this,resources.getString(R.string.send_mail_please),Toast.LENGTH_SHORT).show()
                         Utils.copy(resources.getString(R.string.mail), this)
+                        requestsFragment.applied()
                     }else{
                         Snackbar.make(fab,resources.getString(R.string.no_choose_app),
                             Snackbar.LENGTH_SHORT).show()
