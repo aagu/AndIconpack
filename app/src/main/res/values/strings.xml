@@ -70,5 +70,8 @@
     </string>
     <string name="cm_dialog_content">%1$s 是CyanogenMod（based） Roms 的一部分，\n你想要将它下载到你的设备上吗？
     </string>
+    <string name="changelog_title">更新日志</string>
+    <string name="btn_ok">好的</string>
+    <string name="changelog_detail"><![CDATA[修复了一些图标没有自动应用的问题]]></string>
 
 </resources>

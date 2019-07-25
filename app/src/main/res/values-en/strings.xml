@@ -74,5 +74,8 @@
     <string name="cm_dialog_content">%1$s is part of CyanogenMod (based) roms.\nWould you like to
         install it on your device?
     </string>
+    <string name="changelog_title">changeLog</string>
+    <string name="btn_ok">OK</string>
+    <string name="changelog_detail"><![CDATA[fix: some icons were not applied]]></string>
 
 </resources>

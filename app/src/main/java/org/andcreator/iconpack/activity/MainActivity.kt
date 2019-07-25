@@ -5,6 +5,7 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.app.WallpaperManager
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
@@ -34,6 +35,7 @@ import org.andcreator.iconpack.util.ColorUtil
 import org.andcreator.iconpack.util.DisplayUtil
 
 import kotlinx.android.synthetic.main.activity_main.*
+import org.andcreator.iconpack.dialog.ChangesDialog
 import org.andcreator.iconpack.util.Utils
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -75,6 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         getPermission()
         initView()
+        checkChangeLog()
 
     }
 
@@ -259,6 +262,29 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             else ->{}
+        }
+    }
+
+    private fun checkChangeLog() {
+        val sharedPreferences = getSharedPreferences("history", Context.MODE_PRIVATE)
+        val lastVersion = sharedPreferences.getString("version", "")
+        val thisVersion = getVersionCode(baseContext)
+        if (!thisVersion.contentEquals(lastVersion)) {
+            val dialog = ChangesDialog()
+            dialog.show(supportFragmentManager, "dialog")
+            val editor = sharedPreferences.edit()
+            editor.putString("version", thisVersion)
+            editor.apply()
+        }
+    }
+
+    private fun getVersionCode(context: Context): String {
+        val packageManager = context.packageManager
+        val packageInfo = packageManager.getPackageInfo(context.packageName, 0)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            packageInfo.longVersionCode.toString()
+        } else {
+            packageInfo.versionCode.toString()
         }
     }
 
