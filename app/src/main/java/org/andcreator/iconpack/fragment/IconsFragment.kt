@@ -28,6 +28,7 @@ import java.io.IOException
 class IconsFragment : androidx.fragment.app.Fragment() {
 
     private val iconsList = ArrayList<IconsBean>()
+    private var searchIconsList = ArrayList<IconsBean>()
     private lateinit var adapter: IconsAdapter
 
     override fun onCreateView(
@@ -56,17 +57,7 @@ class IconsFragment : androidx.fragment.app.Fragment() {
                 startActivity(intent)
             }
         })
-
-        doAsync {
-            loadIcons()
-            uiThread {
-                if (loading.visibility == View.VISIBLE){
-                    loading.visibility = View.GONE
-                }
-                adapter.notifyDataSetChanged()
-            }
-        }
-
+        reloadIcons()
     }
 
     private fun loadIcons(){
@@ -107,5 +98,41 @@ class IconsFragment : androidx.fragment.app.Fragment() {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    fun search(name: String) {
+        if (name.isNotEmpty()){
+
+            doAsync {
+                iconsList.clear()
+                for (iconName in searchIconsList) {
+                    if (iconName.name.contains(name, true)) {
+                        iconsList.add(iconName)
+                    }
+                }
+
+                uiThread {
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        }else{
+            reloadIcons()
+        }
+    }
+
+    fun reloadIcons() {
+
+        doAsync {
+            loadIcons()
+            uiThread {
+                if (loading.visibility == View.VISIBLE){
+                    loading.visibility = View.GONE
+                }
+                adapter.notifyDataSetChanged()
+                searchIconsList.clear()
+                searchIconsList = iconsList.clone() as ArrayList<IconsBean>
+            }
+        }
+
     }
 }

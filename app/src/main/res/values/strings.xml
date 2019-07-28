@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">And 图标包模板</string>
     <string name="action_settings">设置</string>
 
@@ -14,12 +15,19 @@
     <string name="home_link">https://github.com/hujincan/AndIconpack/</string>
 
     <!-- 新增图标数量 -->
-    <string name="new_icons">2</string>
+    <string name="new_icons">16</string>
 
     <!-- 作者信息 -->
     <string name="designer_name">And</string>
     <string name="designer_message">图标包创作者</string>
     <string name="mail">hujincan15369@Gmail.com</string>
+
+    <!-- 手动解析二维码获得地址中的参数，例如 https://qr.alipay.com/tsx083367dghotyahi8lq2e 最后那段 -->
+    <string name="alipay_code" translatable="false">tsx083367dghotyahi8lq2e</string>
+
+    <!-- 更新了啥？ -->
+    <string name="update_content" translatable="false">• 更新了XXXXXXXXXXXXXXXXXXX\n\n• 更新了XXXXXXXXXXXXXXXXXXX\n\n• 更新了XXXXXXXXXXXXXXXXXXX</string>
+
 
     <!-- 更多信息前往main/java/packageName/AboutFragment.java 修改 -->
 
@@ -56,7 +64,17 @@
 
     <string name="new_icons_num">新增</string>
 
+    <string name="search">搜索</string>
+
+    <string name="search_icon">搜索图标..</string>
+
+    <string name="whats_update">更新了啥？</string>
+
+    <string name="official">正式版</string>
+
     <string name="gnl_title">不兼容谷歌即时桌面</string>
+
+    <string name="transition_icon" translatable="false">transition_icon</string>
 
     <string name="gnl_content">谷歌即时桌面与图标包是不可兼容的，但请不要因此给予这个图标包负面的评价。有一个解决方法你可以尝试，但这需要使用到一个外部应用，你想要下载它吗?
     </string>

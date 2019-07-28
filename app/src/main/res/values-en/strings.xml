@@ -14,7 +14,7 @@
     <string name="home_link">https://github.com/hujincan/AndIconpack/</string>
 
     <!-- 新增图标数量 -->
-    <string name="new_icons">2</string>
+    <string name="new_icons">16</string>
 
     <!-- 作者信息 -->
     <string name="designer_name">And</string>
@@ -54,6 +54,15 @@
     <string name="feel_good_b">Click the following and rate</string>
 
     <string name="new_icons_num">New</string>
+
+    <string name="search">Search</string>
+
+    <string name="search_icon">Search Icons..</string>
+
+
+    <string name="whats_update">What\'s Update?</string>
+
+    <string name="official">Official</string>
 
     <string name="gnl_title">Google Now Launcher is NOT Compatible</string>
 

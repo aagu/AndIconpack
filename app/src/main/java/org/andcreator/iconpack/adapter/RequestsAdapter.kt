@@ -85,7 +85,7 @@ class RequestsAdapter(private val context: Context,
         }
     }
 
-    fun selectAll(){
+    private fun selectAll(){
         if (!isSelect){
             for (i in 0 until checkRead.size){
 

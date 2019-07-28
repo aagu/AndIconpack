@@ -3,8 +3,10 @@ package org.andcreator.iconpack.util
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.os.Build
 import org.andcreator.iconpack.R
 
 object Utils {
@@ -41,4 +43,22 @@ object Utils {
         cmb.primaryClip = data
     }
 
+    /**
+     * 获取App版本号
+     */
+    fun getAppVersion(context: Context): Int{
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            context.packageManager.getPackageInfo(context.packageName, 0).longVersionCode.toInt()
+        } else {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionCode
+        }
+    }
+
+    /**
+     * 获取App版本号名称
+     */
+    fun getAppVersionName(context: Context): String{
+        return context.packageManager.getPackageInfo(context.packageName, 0).versionName
+
+    }
 }
