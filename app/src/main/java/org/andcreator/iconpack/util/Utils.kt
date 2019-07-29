@@ -32,16 +32,6 @@ object Utils {
             0
         }
     }
-    /**
-     * 实现文本复制功能
-     * @param content
-     */
-    fun copy(content: String, context: Context) {
-        // 得到剪贴板管理器
-        val cmb = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val data = ClipData.newPlainText(context.getString(R.string.app_name),content.trim())
-        cmb.primaryClip = data
-    }
 
     /**
      * 获取App版本号
