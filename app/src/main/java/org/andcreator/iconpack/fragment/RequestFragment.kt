@@ -89,7 +89,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
                     zipLoad.progress = msg.arg1
                 }
                 3 ->{
-                    sendEmail(Uri.fromFile(fileZip))
+                    sendEmail(fileZip)
 
                     zipLoad.visibility = View.GONE
 
@@ -250,20 +250,21 @@ class RequestFragment : androidx.fragment.app.Fragment() {
 
     }
 
+    private fun sendEmail(path: File){
 
-    private fun sendEmail(path: Uri){
         // 必须明确使用mailto前缀来修饰邮件地址,如果使用
 // intent.putExtra(Intent.EXTRA_EMAIL, email)，结果将匹配不到任何应用
         val uri = Uri.parse("mailto:"+resources.getString(R.string.mail))
         val email = arrayOf(resources.getString(R.string.mail))
         val intent = Intent(Intent.ACTION_SEND, uri)
+        intent.type = "application/octet-stream"
+        intent.putExtra(Intent.EXTRA_EMAIL, resources.getString(R.string.mail))
         intent.putExtra(Intent.EXTRA_CC, email) // 抄送人
-        intent.putExtra(Intent.EXTRA_STREAM, path)
+        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context!!, "${activity!!.packageName}.provider", path))
         intent.putExtra(Intent.EXTRA_SUBJECT, "致开发者") // 主题
         intent.putExtra(Intent.EXTRA_TEXT, "") // 正文
         startActivity(Intent.createChooser(intent, "请选择邮件类应用"))
     }
-
 
     private fun loadData(){
         appsList.clear()
