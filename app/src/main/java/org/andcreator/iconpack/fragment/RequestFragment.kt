@@ -256,7 +256,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
 // intent.putExtra(Intent.EXTRA_EMAIL, email)，结果将匹配不到任何应用
         val uri = Uri.parse("mailto:"+resources.getString(R.string.mail))
         val email = arrayOf(resources.getString(R.string.mail))
-        val intent = Intent(Intent.ACTION_SENDTO, uri)
+        val intent = Intent(Intent.ACTION_SEND, uri)
         intent.putExtra(Intent.EXTRA_CC, email) // 抄送人
         intent.putExtra(Intent.EXTRA_STREAM, path)
         intent.putExtra(Intent.EXTRA_SUBJECT, "致开发者") // 主题
