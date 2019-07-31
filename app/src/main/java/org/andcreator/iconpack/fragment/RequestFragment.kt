@@ -258,11 +258,10 @@ class RequestFragment : androidx.fragment.app.Fragment() {
         val email = arrayOf(resources.getString(R.string.mail))
         val intent = Intent(Intent.ACTION_SEND, uri)
         intent.type = "application/octet-stream"
-        intent.putExtra(Intent.EXTRA_EMAIL, resources.getString(R.string.mail))
-        intent.putExtra(Intent.EXTRA_CC, email) // 抄送人
-        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context!!, "${activity!!.packageName}.provider", path))
+        intent.putExtra(Intent.EXTRA_EMAIL, email)
         intent.putExtra(Intent.EXTRA_SUBJECT, "致开发者") // 主题
         intent.putExtra(Intent.EXTRA_TEXT, "") // 正文
+        intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context!!, "${activity!!.packageName}.provider", path))
         startActivity(Intent.createChooser(intent, "请选择邮件类应用"))
     }
 
@@ -394,9 +393,12 @@ class RequestFragment : androidx.fragment.app.Fragment() {
 
     private fun saveIcon(icon: Drawable, name: String) {
 
+        val fileName = containsName(name)
+        myFilesName.add(fileName)
+
         val bmp = getBitmapFromDrawable(icon)
 
-        val file = File(activity!!.externalCacheDir, "$name.png")
+        val file = File(activity!!.externalCacheDir, "$fileName.png")
         val out = FileOutputStream(file)
         try {
             if (!file.exists()) {
@@ -418,6 +420,15 @@ class RequestFragment : androidx.fragment.app.Fragment() {
         }
 
         myFiles.add(file)
+    }
+
+    private fun containsName(name: String) :String {
+
+        return if (myFilesName.contains(name)){
+            containsName("$name-")
+        }else {
+            name
+        }
     }
 
 
