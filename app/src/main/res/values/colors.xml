@@ -5,12 +5,14 @@
 
     <!-- 主题颜色 -->
     <color name="colorAccent">#2d9bf3</color>
+    <color name="colorAccentTap">#882d9bf3</color>
     <color name="backgroundColor">#fafafa</color>
     <color name="white">#ffffff</color>
 
     <!-- 细节颜色 -->
     <color name="pink">#ec407a</color>
     <color name="green">#00C853</color>
+    <color name="primary">#ec407a</color>
 
     <!-- 字体颜色 -->
     <color name="black_text">#222222</color>

@@ -47,4 +47,9 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="fab_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+
 </resources>

@@ -21,8 +21,34 @@
 <!-- 如果想要适配POCO这样的Launcher，必须把drawable节点写在component的后面 -->
 
 <resources>
+    <!--<iconback img1="iconback1" img2="iconback2" img3="iconback3" /><iconmask img1="iconmask" /><scale factor="0" /> -->
+
+
+
+    <!-- 电话 / Phone -->
+
+
+    <item component="ComponentInfo{com.google.android.dialer/com.google.android.dialer.extensions.GoogleDialtactsActivity}" drawable="ic_dialer"/>
+
+    <!-- Build: google / Pixel XL -->
+
+
+    <!-- 信息 / Messages -->
+
+
+    <item component="ComponentInfo{com.google.android.apps.messaging/com.google.android.apps.messaging.ui.ConversationListActivity}" drawable="ic_message" />
+
+    <!-- Build: google / Pixel XL -->
+
+
+    <!-- 设置 / Settings -->
+
+
+    <item component="ComponentInfo{com.android.settings/com.android.settings.Settings}" drawable="ic_settings"/>
 
     <!-- Chrome / Chrome -->
     <item component="ComponentInfo{com.android.chrome/com.google.android.apps.chrome.Main}" drawable="ic_chrome"/>
+
+    <item component="ComponentInfo{com.google.android.contacts/com.android.contacts.activities.PeopleActivity}" drawable="ic_contacts"/>
 
 </resources>

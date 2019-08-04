@@ -7,11 +7,11 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "org.andcreator.iconpack"
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -40,6 +40,9 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:4.0.0'
     implementation "androidx.room:room-runtime:$room_version"
     kapt "android.arch.persistence.room:compiler:$room_version"
+    implementation 'uk.co.samuelwall:material-tap-target-prompt:2.15.0'
+    implementation 'com.github.QuadFlask:FloatingActionMenu:0.0.1@aar'
+    implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
