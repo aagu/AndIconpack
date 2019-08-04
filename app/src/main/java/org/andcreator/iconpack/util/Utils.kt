@@ -3,8 +3,10 @@ package org.andcreator.iconpack.util
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.os.Build
 import org.andcreator.iconpack.R
 
 object Utils {
@@ -30,15 +32,23 @@ object Utils {
             0
         }
     }
+
     /**
-     * 实现文本复制功能
-     * @param content
+     * 获取App版本号
      */
-    fun copy(content: String, context: Context) {
-        // 得到剪贴板管理器
-        val cmb = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val data = ClipData.newPlainText(context.getString(R.string.app_name),content.trim())
-        cmb.primaryClip = data
+    fun getAppVersion(context: Context): Int{
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            context.packageManager.getPackageInfo(context.packageName, 0).longVersionCode.toInt()
+        } else {
+            context.packageManager.getPackageInfo(context.packageName, 0).versionCode
+        }
     }
 
+    /**
+     * 获取App版本号名称
+     */
+    fun getAppVersionName(context: Context): String{
+        return context.packageManager.getPackageInfo(context.packageName, 0).versionName
+
+    }
 }

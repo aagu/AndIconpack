@@ -23,4 +23,17 @@
         app:fastScrollAlwaysEnabled="false"
         app:fastScrollPopupTextColor="@color/white"/>
 
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/zipLoad"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:indeterminate="false"
+        android:progress="0"
+        android:visibility="gone"
+        android:max="100"
+        app:mpb_progressStyle="horizontal"
+        app:mpb_setBothDrawables="true"
+        app:mpb_useIntrinsicPadding="false"
+        style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
+
 </FrameLayout>

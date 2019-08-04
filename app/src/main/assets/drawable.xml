@@ -10,6 +10,11 @@
 
     <!-- 仅作为演示 -->
     <categor title="All"/>
-    <item drawable="ic_chrome" name="Chrome" />
+    <item drawable="ic_settings" name="设置" />
+
+    <category title="系统" />
+    <item drawable="ic_dialer" name="电话"  />
+    <item drawable="ic_message" name="信息" />
+    <item drawable="ic_contacts" name="联系人" />
 
 </resources>
