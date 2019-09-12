@@ -7,7 +7,6 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Bitmap
@@ -40,6 +39,8 @@ import com.flask.floatingactionmenu.FloatingActionToggleButton
 import org.andcreator.iconpack.R
 import org.andcreator.iconpack.fragment.*
 import org.andcreator.iconpack.listener.AppBarStateChangeListener
+import org.andcreator.iconpack.util.ColorUtil
+import org.andcreator.iconpack.util.DisplayUtil
 
 import kotlinx.android.synthetic.main.activity_main.*
 import org.andcreator.iconpack.dialog.ChangesDialog
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity() {
     private var fabStatus = 1
     private lateinit var requestsFragment: RequestFragment
     private lateinit var iconsFragment: IconsFragment
+    private lateinit var debugFragment: DebugFragment
     private val icons = ArrayList<Int>()
     private var tabTextColor = 0xffffff
 
@@ -86,7 +88,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         tabTextColor = ContextCompat.getColor(this@MainActivity,R.color.white)
-        checkVersion()
         getPermission()
         initView()
         checkChangeLog()
@@ -178,20 +179,20 @@ class MainActivity : AppCompatActivity() {
                     0 ->{
                         if (fabStatus!=1){
                             fabStatus = 1
-                            changeFabIcon(false)
+                            changeFabIcon("default")
                         }
                     }
                     1 ->{
                         iconsFragment = adapter.getFragment(1) as IconsFragment
                         if (fabStatus!=1){
                             fabStatus = 1
-                            changeFabIcon(false)
+                            changeFabIcon("default")
                         }
                     }
 
                     2 ->{
                         fabStatus = 2
-                        changeFabIcon(true)
+                        changeFabIcon("send")
                         requestsFragment = adapter.getFragment(2) as RequestFragment
                         requestsFragment.setCallbackListener(object : RequestFragment.Callbacks{
                             override fun callback(position: Int) {
@@ -206,14 +207,19 @@ class MainActivity : AppCompatActivity() {
                     3 ->{
                         if (fabStatus!=1){
                             fabStatus = 1
-                            changeFabIcon(false)
+                            changeFabIcon("default")
                         }
                     }
                     4 ->{
                         if (fabStatus!=1){
                             fabStatus = 1
-                            changeFabIcon(false)
+                            changeFabIcon("default")
                         }
+                    }
+                    5 -> {
+                        fabStatus = 5
+                        changeFabIcon("debug")
+                        debugFragment = adapter.getFragment(5) as DebugFragment
                     }
                 }
             }
@@ -240,6 +246,13 @@ class MainActivity : AppCompatActivity() {
                     Snackbar.make(fab,resources.getString(R.string.get_permission),
                         Snackbar.LENGTH_SHORT).show()
                 }
+            }
+        }
+
+        fabDebug.setOnClickListener {
+            if (fabStatus==5) {
+                Utils.setDebug(false, this)
+                Toast.makeText(this, getString(R.string.debug_disabled), Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -329,7 +342,7 @@ class MainActivity : AppCompatActivity() {
             override fun callback(position: Int) {
                 when(position) {
                     1 -> pager.currentItem = 1
-                    2 -> updateContent()
+                    2 -> ChangesDialog().show(supportFragmentManager, "dialog")
                 }
             }
 
@@ -425,7 +438,7 @@ class MainActivity : AppCompatActivity() {
             .setPrimaryText("探索图标")
             .setSecondaryText("点击此处搜索图标或应用至启动器!")
             .setBackgroundColour(Color.argb(244, Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor)))
-            .setPromptStateChangeListener { prompt, state ->
+            .setPromptStateChangeListener { _, state ->
                 if (state == MaterialTapTargetPrompt.STATE_DISMISSED){
                     updateContent()
                 }
@@ -499,9 +512,8 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("history", Context.MODE_PRIVATE)
         val lastVersion = sharedPreferences.getString("version", "")
         val thisVersion = getVersionCode(baseContext)
-        if (!thisVersion.contentEquals(lastVersion)) {
-            val dialog = ChangesDialog()
-            dialog.show(supportFragmentManager, "dialog")
+        if (thisVersion != lastVersion) {
+            ChangesDialog().show(supportFragmentManager, "dialog")
             val editor = sharedPreferences.edit()
             editor.putString("version", thisVersion)
             editor.apply()
@@ -541,6 +553,9 @@ class MainActivity : AppCompatActivity() {
         adapter.addFragment(RequestFragment(),resources.getString(R.string.icon_adapter))
         adapter.addFragment(ApplyFragment(),resources.getString(R.string.apply))
         adapter.addFragment(AboutFragment(),resources.getString(R.string.about))
+        if (Utils.isShowDebug(this)) {
+            adapter.addFragment(DebugFragment(),resources.getString(R.string.debug))
+        }
         viewPager.adapter = adapter
     }
 
@@ -636,34 +651,53 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    private fun changeFabIcon(isSend: Boolean){
-        if (isSend && fabSend.visibility != View.VISIBLE){
-            val animator = ObjectAnimator.ofFloat(fabSend, "rotation", -180f, 0f)
-            animator.duration = 360
-            animator.interpolator = DecelerateInterpolator()
-            animator.addListener(object : AnimatorListenerAdapter(){
-                @SuppressLint("RestrictedApi")
-                override fun onAnimationStart(animation: Animator?) {
-                    super.onAnimationStart(animation)
-                    fabSend.visibility = View.VISIBLE
-                    fab.visibility = View.INVISIBLE
-                }
-            })
-            animator.start()
-
-        }else {
-            val animator = ObjectAnimator.ofFloat(fab, "rotation", -180f, 0f)
-            animator.duration = 360
-            animator.interpolator = DecelerateInterpolator()
-            animator.addListener(object : AnimatorListenerAdapter(){
-                @SuppressLint("RestrictedApi")
-                override fun onAnimationStart(animation: Animator?) {
-                    super.onAnimationStart(animation)
-                    fabSend.visibility = View.INVISIBLE
-                    fab.visibility = View.VISIBLE
-                }
-            })
-            animator.start()
+    private fun changeFabIcon(fabItem: String){
+        when (fabItem) {
+            "send" -> {
+                val animator = ObjectAnimator.ofFloat(fabSend, "rotation", -180f, 0f)
+                animator.duration = 360
+                animator.interpolator = DecelerateInterpolator()
+                animator.addListener(object : AnimatorListenerAdapter(){
+                    @SuppressLint("RestrictedApi")
+                    override fun onAnimationStart(animation: Animator?) {
+                        super.onAnimationStart(animation)
+                        fabSend.visibility = View.VISIBLE
+                        fabDebug.visibility = View.INVISIBLE
+                        fab.visibility = View.INVISIBLE
+                    }
+                })
+                animator.start()
+            }
+            "debug" -> {
+                val animator = ObjectAnimator.ofFloat(fabDebug, "rotation", -180f, 0f)
+                animator.duration = 360
+                animator.interpolator = DecelerateInterpolator()
+                animator.addListener(object : AnimatorListenerAdapter(){
+                    @SuppressLint("RestrictedApi")
+                    override fun onAnimationStart(animation: Animator?) {
+                        super.onAnimationStart(animation)
+                        fabSend.visibility = View.INVISIBLE
+                        fab.visibility = View.INVISIBLE
+                        fabDebug.visibility = View.VISIBLE
+                    }
+                })
+                animator.start()
+            }
+            else -> {
+                val animator = ObjectAnimator.ofFloat(fab, "rotation", -180f, 0f)
+                animator.duration = 360
+                animator.interpolator = DecelerateInterpolator()
+                animator.addListener(object : AnimatorListenerAdapter(){
+                    @SuppressLint("RestrictedApi")
+                    override fun onAnimationStart(animation: Animator?) {
+                        super.onAnimationStart(animation)
+                        fabSend.visibility = View.INVISIBLE
+                        fabDebug.visibility = View.INVISIBLE
+                        fab.visibility = View.VISIBLE
+                    }
+                })
+                animator.start()
+            }
         }
     }
 
@@ -753,12 +787,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (searchBox.visibility == View.VISIBLE){
-            search()
-        }else if (pager.currentItem != 0){
-            pager.currentItem = 0
-        }else{
-            super.onBackPressed()
+        when {
+            searchBox.visibility == View.VISIBLE -> search()
+            pager.currentItem != 0 -> pager.currentItem = 0
+            else -> super.onBackPressed()
         }
     }
 }

@@ -181,7 +181,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
                         myFiles.add(file)
                         for ((index,value) in adapter.getSelect().withIndex()){
                             if (value){
-                                saveIcon(appsList[index+1].icon!!, appsList[index+1].name?.toLowerCase()?.replace(" ", "_")!!)
+                                saveIcon(appsList[index+1].icon!!, appsList[index+1].pagName?.toLowerCase()?.replace(".", "_")!!)
 
                                 val msg = Message()
                                 msg.what = 1
@@ -265,6 +265,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
         intent.putExtra(Intent.EXTRA_TEXT, "") // 正文
         intent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context!!, "${activity!!.packageName}.provider", path))
         startActivity(Intent.createChooser(intent, "请选择邮件类应用"))
+        applied()
     }
 
     private fun loadData(){
@@ -388,7 +389,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
             if (value){
                 boolean = true
                 message.append("<!-- ${appsList[index+1].name} -->\r\n")
-                message.append("<item component=\"ComponentInfo{${appsList[index+1].pagName}/${appsList[index+1].activityName}}\" drawable=\"${appsList[index+1].name?.toLowerCase()?.replace(" ", "_")}\" />")
+                message.append("<item component=\"ComponentInfo{${appsList[index+1].pagName}/${appsList[index+1].activityName}}\" drawable=\"${appsList[index+1].pagName?.toLowerCase()?.replace(".", "_")}\" />")
                 message.append("\r\n")
                 doAsync {
                     val b = appsList[index+1]
