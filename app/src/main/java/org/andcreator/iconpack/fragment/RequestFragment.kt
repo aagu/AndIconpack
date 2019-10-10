@@ -113,7 +113,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
 
     private fun initView(){
         recyclerApps.layoutManager = LinearLayoutManager(context!!)
-        adapter = RequestsAdapter(context!!,appsList,checked)
+        adapter = RequestsAdapter(context!!, appsList, checked)
 
         recyclerApps.adapter = adapter
 
@@ -231,18 +231,6 @@ class RequestFragment : androidx.fragment.app.Fragment() {
 
                 thread.start()
 
-                /*
-                val sendIntent = Intent()
-                sendIntent.action = Intent.ACTION_SEND
-                sendIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context!!,
-                    "${activity!!.packageName}.provider", fileZip))
-                sendIntent.type = "text/plain"
-                sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                startActivity(Intent.createChooser(sendIntent,resources.getString(R.string.send_mail_to)))
-
-                Toast.makeText(context, resources.getString(R.string.send_mail_please), Toast.LENGTH_SHORT).show()
-                Utils.copy(resources.getString(R.string.mail), context!!)*/
-
             }
         }else {
             callbacks.callback(2)
@@ -283,6 +271,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
                 if (adaptionBean.pagName == pkgName && reInfo.activityInfo.name == adaptionBean.activityName){
                     waysAdaptions++
                     isHave = true
+                    //包名和activity名一样才算适配
                     break
                 }
             }
@@ -320,7 +309,7 @@ class RequestFragment : androidx.fragment.app.Fragment() {
                         if (xml.name == "item"){
                             val pkgActivity = xml.getAttributeValue(0)
                             if (pkgActivity.indexOf("{")+1 < pkgActivity.indexOf("/") && pkgActivity.indexOf("/")+1 < pkgActivity.indexOf("}")){
-                                adaptations.add(AdaptionBean(pkgActivity.substring(pkgActivity.indexOf("{")+1,pkgActivity.indexOf("/")), pkgActivity.substring(pkgActivity.indexOf("/")+1,pkgActivity.indexOf("}"))))
+                                adaptations.add(AdaptionBean(pkgActivity.substring(pkgActivity.indexOf("{")+1,pkgActivity.indexOf("/")), pkgActivity.substring(pkgActivity.indexOf("/")+1,pkgActivity.indexOf("}")),""))
                             }
                         }
                     }
@@ -336,7 +325,6 @@ class RequestFragment : androidx.fragment.app.Fragment() {
             e.printStackTrace()
         }
     }
-
 
     interface Callbacks {
         fun callback(position: Int)
