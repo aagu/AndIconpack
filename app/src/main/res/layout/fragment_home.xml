@@ -120,204 +120,127 @@
                     android:paddingTop="2dp"
                     android:paddingStart="10dp"
                     android:layout_below="@+id/newText"
-                    android:layout_toRightOf="@+id/newIcon"/>
+                    android:layout_toEndOf="@+id/newIcon"/>
 
             </RelativeLayout>
 
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/cardPager"
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_height="200dp"
+            android:clipChildren="false" />
+
+        <TextView
+            android:id="@+id/whatsNewAdaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_text"
+            android:textSize="18sp"
+            android:paddingStart="26dp"
+            android:paddingEnd="26dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone"
+            android:text="更新了哪些图标"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/updateIcons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:foreground="?attr/selectableItemBackground"
-            app:cardBackgroundColor="@color/backgroundColor"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="1dp">
+            android:visibility="gone"/>
 
-            <RelativeLayout
+        <TextView
+            android:id="@+id/whatsAdaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_text"
+            android:textSize="18sp"
+            android:paddingStart="26dp"
+            android:paddingEnd="26dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:visibility="gone"
+            android:text="新适配设备上哪些图标"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/adaptationIcons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/contribute"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/primary"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:cardCornerRadius="2dp"
+            app:cardElevation="4dp"
+            android:focusable="true" >
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/card_gra_background"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tv_card_main_3_title"
-                    style="@style/TextAppearance.AppCompat.Large"
+                    android:id="@+id/adaptionNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_toStartOf="@+id/img_star"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/for_app_star"
-                    android:textColor="@color/black_text" />
+                    android:layout_marginTop="8dp"
+                    android:padding="16dp"
+                    android:text="对本设备新适配了0应用"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.505"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/tv_card_main3_subtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@id/tv_card_main_3_title"
-                    android:layout_toStartOf="@+id/img_star"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/feel_good_a" />
-
-                <TextView
-                    android:id="@+id/tv_card_main3_details"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@id/tv_card_main3_subtitle"
-                    android:layout_marginStart="16dp"
-                    android:layout_toStartOf="@+id/img_star"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/feel_good_b"
-                    android:textColor="@color/text_color" />
-
-                <View
-                    android:id="@+id/view_card_main3_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_toStartOf="@+id/img_star"
-                    android:layout_below="@id/tv_card_main3_details"
-                    android:layout_marginTop="8dp"
-                    android:background="?attr/colorPrimaryDark" />
-
-                <LinearLayout
-                    android:id="@+id/ll_card_main3_rate"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_below="@id/view_card_main3_line"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:orientation="horizontal"
-                    android:paddingEnd="8dp"
-                    android:paddingStart="8dp"
-                    android:focusable="true">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_star_border_black_24dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_star_border_black_24dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_star_border_black_24dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_star_border_black_24dp" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="16dp"
-                        android:src="@drawable/ic_star_border_black_24dp" />
-                </LinearLayout>
+                    android:padding="8dp"
+                    android:text="请作者喝一杯咖啡吧~"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:drawableStart="@drawable/ic_local_cafe_white_24dp"
+                    android:drawablePadding="8dp"
+                    android:layout_marginBottom="26dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adaptionNumber" />
 
                 <ImageView
-                    android:id="@+id/img_star"
-                    android:layout_width="140dp"
+                    android:id="@+id/contributeClose"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignBottom="@+id/ll_card_main3_rate"
-                    android:layout_alignParentEnd="true"
-                    android:scaleType="centerCrop" />
+                    android:padding="16dp"
+                    android:src="@drawable/ic_close_white_24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/donate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:foreground="?attr/selectableItemBackground">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="58dp"
-                android:layout_height="58dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:padding="8dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/alipay"/>
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="为图标包作者提供捐赠"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="如果您能够捐赠我，我将非常感谢"
-                android:textColor="@color/text_color"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView2"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/textView"
-                app:layout_constraintVertical_bias="0.0" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:src="@drawable/ic_launch_black_24dp"
-                android:tint="@color/text_color"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/openResource"
