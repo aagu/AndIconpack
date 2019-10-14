@@ -138,63 +138,14 @@
 
     </androidx.viewpager.widget.ViewPager>
 
-    <com.flask.floatingactionmenu.FadingBackgroundView
-        android:id="@+id/fabBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-    <com.flask.floatingactionmenu.FloatingActionMenu
-        android:id="@+id/fam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp"
-        app:fab_labelStyle="@style/fab_labels_style"
-        app:layout_anchor="@+id/pager"
-        app:layout_anchorGravity="bottom|right">
-
-        <!-- app:fab_labelStyle="@style/fab_labels_style" -->
-
-        <com.flask.floatingactionmenu.FloatingActionButton
-            android:id="@+id/fabSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:fab_labelText="@string/search"
-            app:fab_normal_icon="@drawable/ic_search_white_24dp"
-            app:fab_colorNormal="?attr/colorAccent"
-            app:fab_type="mini" />
-
-        <com.flask.floatingactionmenu.FloatingActionButton
-            android:id="@+id/fabApply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:fab_labelText="@string/apply"
-            app:fab_normal_icon="@drawable/ic_color_lens_white_24dp"
-            app:fab_colorNormal="?attr/colorAccent"
-            app:fab_type="mini" />
-
-        <com.flask.floatingactionmenu.FloatingActionToggleButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:fab_labelText="@string/close"
-            app:fab_normal_icon="@drawable/ic_format_paint_white_24dp"
-            app:fab_toggle_icon="@drawable/ic_close_white_24dp"
-            app:fab_colorNormal="?attr/colorAccent" />
-
-    </com.flask.floatingactionmenu.FloatingActionMenu>
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_send_white_24dp"
+        android:src="@drawable/ic_search_white_24dp"
         android:layout_margin="@dimen/fab_margin"
         app:layout_anchor="@+id/pager"
-        app:layout_anchorGravity="bottom|right"
-        android:visibility="invisible"/>
+        app:layout_anchorGravity="bottom|right"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabDebug"

@@ -16,6 +16,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -34,8 +36,8 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
-import com.flask.floatingactionmenu.FloatingActionToggleButton
 import org.andcreator.iconpack.R
 import org.andcreator.iconpack.fragment.*
 import org.andcreator.iconpack.listener.AppBarStateChangeListener
@@ -46,13 +48,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.andcreator.iconpack.dialog.ChangesDialog
 import org.andcreator.iconpack.util.Utils
 import kotlinx.android.synthetic.main.search_box.*
+import org.andcreator.iconpack.bean.AdaptionBean
 import org.andcreator.iconpack.util.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
+import org.xmlpull.v1.XmlPullParserFactory
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt
-import java.io.IOException
+import java.io.*
+import java.lang.StringBuilder
 import java.util.ArrayList
 import kotlin.random.Random
 
@@ -61,10 +66,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: SectionsPagerAdapter
     private var fabStatus = 1
     private lateinit var requestsFragment: RequestFragment
+    private var homeFragment: HomeFragment? = null
     private lateinit var iconsFragment: IconsFragment
     private lateinit var debugFragment: DebugFragment
     private val icons = ArrayList<Int>()
     private var tabTextColor = 0xffffff
+    private lateinit var saveThread: Thread
 
     /**
      * 获取未授权的权限
@@ -75,6 +82,45 @@ class MainActivity : AppCompatActivity() {
      * 请求权限的返回值
      */
     private val permissionCode = 1
+    /**
+     * 已适配列表
+     */
+    private var adaptations: ArrayList<AdaptionBean> = ArrayList()
+    /**
+     * 旧的已适配列表
+     */
+    private var adaptationsOld: ArrayList<AdaptionBean> = ArrayList()
+
+    /**
+     * 旧的已适配列表
+     */
+    private var adaptationsNew: ArrayList<AdaptionBean> = ArrayList()
+
+    private var mHandler= @SuppressLint("HandlerLeak")
+    object : Handler(){
+        override fun handleMessage(msg: Message?) {
+            when(msg!!.what){
+                1 -> {
+                    explore()
+                }
+                2 ->{
+                    updateContent()
+                }
+                3 ->{
+
+                    val data = msg.obj.toString()
+                    AlertDialog.Builder(this@MainActivity)
+                        .setTitle("出现错误")
+                        .setMessage("appfilter.xml 很可能出错，请检查：\n${data}")
+                        .setPositiveButton("点击复制") { _, _ ->
+                            Utils.copy(data, this@MainActivity)
+                        }.setNeutralButton(resources.getString(R.string.cancel)){_,_->
+
+                        }.show()
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,23 +155,6 @@ class MainActivity : AppCompatActivity() {
         pager.offscreenPageLimit = 5
         tab.setupWithViewPager(pager)
         tab.setSelectedTabIndicatorColor(tabTextColor)
-
-        fam.setFadingBackgroundView(fabBackground)
-        fam.setOnFloatingActionMenuSelectedListener { floatingActionButton ->
-            if (floatingActionButton !is FloatingActionToggleButton) {
-                when(floatingActionButton.labelText) {
-                    resources.getString(R.string.search) ->{
-                        pager.currentItem = 1
-                        search()
-                    }
-
-                    resources.getString(R.string.apply) ->{
-                        pager.currentItem = 3
-                    }
-                }
-                fab.toggleOff()
-            }
-        }
 
         appBar.addOnOffsetChangedListener(object : AppBarStateChangeListener(){
             override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?, i: Int, max: Int) {
@@ -181,6 +210,7 @@ class MainActivity : AppCompatActivity() {
                             fabStatus = 1
                             changeFabIcon("default")
                         }
+                        closeSearch()
                     }
                     1 ->{
                         iconsFragment = adapter.getFragment(1) as IconsFragment
@@ -203,18 +233,21 @@ class MainActivity : AppCompatActivity() {
                                 }
                             }
                         })
+                        closeSearch()
                     }
                     3 ->{
                         if (fabStatus!=1){
                             fabStatus = 1
                             changeFabIcon("default")
                         }
+                        closeSearch()
                     }
                     4 ->{
                         if (fabStatus!=1){
                             fabStatus = 1
                             changeFabIcon("default")
                         }
+                        closeSearch()
                     }
                     5 -> {
                         fabStatus = 5
@@ -231,10 +264,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        fab.setOnClickListener {
-
-        }
-
         fabSend.setOnClickListener {
 
             if (fabStatus==2){
@@ -243,9 +272,12 @@ class MainActivity : AppCompatActivity() {
                     requestsFragment.send()
 
                 }else{
-                    Snackbar.make(fab,resources.getString(R.string.get_permission),
+                    Snackbar.make(fabSend,resources.getString(R.string.get_permission),
                         Snackbar.LENGTH_SHORT).show()
                 }
+            }else {
+                pager.currentItem = 1
+                search()
             }
         }
 
@@ -257,9 +289,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun closeSearch() {
+        if (searchBox.visibility == View.VISIBLE){
+            searchInput.setText("")
+            closeKeyboard()
+            search()
+            iconsFragment.reloadIcons()
+        }
+    }
+
     private fun search() {
 
         if (searchBox.visibility != View.VISIBLE){
+
+            appBar.setExpanded(true)
 
             ObjectAnimator.ofFloat(icon1, "alpha",1f, 0f).setDuration(300).start()
             ObjectAnimator.ofFloat(icon1, "translationY", 0f, 200f).setDuration(300).start()
@@ -337,17 +380,29 @@ class MainActivity : AppCompatActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
 
-        val homeFragment = adapter.getFragment(0) as HomeFragment
-        homeFragment.setCallbackListener(object : HomeFragment.Callbacks{
-            override fun callback(position: Int) {
-                when(position) {
-                    1 -> pager.currentItem = 1
-                    2 -> ChangesDialog().show(supportFragmentManager, "dialog")
+        if (homeFragment == null){
+            homeFragment = adapter.getFragment(0) as HomeFragment
+            homeFragment!!.setCallbackListener(object : HomeFragment.Callbacks{
+                override fun callback(position: Int) {
+                    when(position) {
+                        1 -> pager.currentItem = 1
+                        2 -> ChangesDialog().show(supportFragmentManager, "dialog")
+                    }
                 }
-            }
+            })
+            showUpdateIcons()
+        }
+    }
 
-        })
+    private var threadIndex = 0
 
+    private fun showUpdateIcons(){
+
+        threadIndex++
+        if (threadIndex < 2){
+            return
+        }
+        check()
     }
 
     private fun closeKeyboard(){
@@ -368,7 +423,7 @@ class MainActivity : AppCompatActivity() {
 
         doAsync{
 
-            tabTextColor = if (getBright(drawableToBitmap(wallpaperManager.drawable)) > 220){
+            tabTextColor = if (getBright(Bitmap.createScaledBitmap(drawableToBitmap(wallpaperManager.drawable), 500, 300, false)) > 220){
                 ContextCompat.getColor(this@MainActivity, R.color.text_color)
             }else{
                 ContextCompat.getColor(this@MainActivity, R.color.white)
@@ -411,6 +466,7 @@ class MainActivity : AppCompatActivity() {
         if (drawable is BitmapDrawable) {
             val bitmapDrawable = drawable
             if(bitmapDrawable.bitmap != null) {
+                //压缩bitmap以便更快识别图像
                 return bitmapDrawable.bitmap
             }
         }
@@ -434,7 +490,7 @@ class MainActivity : AppCompatActivity() {
     private fun explore() {
         val accentColor = ContextCompat.getColor(this, R.color.primary)
         MaterialTapTargetPrompt.Builder(this)
-            .setTarget(R.id.fab)
+            .setTarget(R.id.fabSend)
             .setPrimaryText("探索图标")
             .setSecondaryText("点击此处搜索图标或应用至启动器!")
             .setBackgroundColour(Color.argb(244, Color.red(accentColor), Color.green(accentColor), Color.blue(accentColor)))
@@ -449,16 +505,82 @@ class MainActivity : AppCompatActivity() {
      * 检查版本是否与上次一致
      */
     private fun checkVersion() {
-        //判断是否首次打开软件
-        if (!PreferencesUtil.get(this, "first", false)){
-            PreferencesUtil.put(this, "first", true)
-            explore()
+
+        saveThread = object : Thread(){
+            override fun run() {
+                super.run()
+
+                //判断是否首次打开软件
+                if (!PreferencesUtil.get(this@MainActivity, "first", false)){
+                    PreferencesUtil.put(this@MainActivity, "first", true)
+                    PreferencesUtil.put(this@MainActivity, "versionCode", Utils.getAppVersion(this@MainActivity))
+
+                    //保存到新文件
+                    saveAppFilter(parser())
+
+                    val file = File(filesDir, "appfilter.xml")
+                    val files = File(file.parent)
+                    files.mkdirs()
+                    file.createNewFile()
+
+                    val msg = Message()
+                    msg.what = 1
+                    mHandler.sendMessage(msg)
+
+                }
+
+                //判断是否首次更新软件
+                if (PreferencesUtil.get(this@MainActivity, "versionCode", -1) != -1 && PreferencesUtil.get(this@MainActivity, "versionCode", -1) != Utils.getAppVersion(this@MainActivity)){
+
+                    //不是首次更新，将旧版更改为上个版本的数据
+                    try {
+                        if (File(filesDir, "appfilter.xml").delete()){
+                            val files = File(filesDir, "appfilter.xml")
+                            File(filesDir, "appfilter-new.xml").renameTo(files)
+                        }
+                    }catch (e: IOException){
+
+                    }
+                    //新版本保存到新文件(获取新版数据)
+                    saveAppFilter(parser())
+                    val msg = Message()
+                    msg.what = 2
+                    mHandler.sendMessage(msg)
+                    PreferencesUtil.put(this@MainActivity, "versionCode", Utils.getAppVersion(this@MainActivity))
+                }else{
+                    parser()
+                }
+                showUpdateIcons()
+            }
         }
 
-        if (PreferencesUtil.get(this, "versionCode", -1) != -1 && PreferencesUtil.get(this, "versionCode", -1) != Utils.getAppVersion(this)){
-            updateContent()
-            PreferencesUtil.put(this, "versionCode", Utils.getAppVersion(this))
+        saveThread.start()
+    }
+
+    private fun check(){
+
+        if (File(filesDir, "appfilter.xml").exists()){
+            //获取旧版数据
+            if (parser2().isNotEmpty()){
+                for (v in adaptations) {
+                    if (checkIndexOf(adaptationsOld, v) < 0){
+                        adaptationsNew.add(v)
+                    }
+                }
+                homeFragment!!.getNewIcons(adaptationsNew)
+            }else{
+                homeFragment!!.showAll(adaptations)
+            }
         }
+    }
+
+    private fun checkIndexOf(list: ArrayList<AdaptionBean>, item: AdaptionBean): Int{
+        for (index in list.indices){
+            if (list[index].pagName == item.pagName || list[index].icon == item.icon ){
+                return index
+            }
+        }
+        return -1
     }
 
     /**
@@ -786,11 +908,140 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * 获取当前版本appfilter
+     */
+    private fun parser(): String{
+        adaptations.clear()
+        val err = StringBuilder()
+        val sb = StringBuilder()
+        val xml = resources.getXml(R.xml.appfilter)
+        var type = xml.eventType
+        try {
+            while (type != XmlPullParser.END_DOCUMENT){
+                when(type){
+                    XmlPullParser.START_TAG ->{
+                        if (xml.name == "item"){
+                            val pkgActivity = xml.getAttributeValue(0)
+                            val drawable = xml.getAttributeValue(1)
+                            if (pkgActivity.indexOf("{") > 0 && pkgActivity.indexOf("{")+1 < pkgActivity.indexOf("/") && pkgActivity.indexOf("/")+1 < pkgActivity.indexOf("}")){
+                                adaptations.add(AdaptionBean(pkgActivity.substring(pkgActivity.indexOf("{")+1,pkgActivity.indexOf("/")), pkgActivity.substring(pkgActivity.indexOf("/")+1,pkgActivity.indexOf("}")),drawable))
+
+                                sb.append("<item component=\"$pkgActivity\" drawable=\"${drawable}\" />\r\n")
+                            }else{
+                                err.append("在${pkgActivity} 附近处有一处错误\r\n")
+                                Log.e("SeeErr",pkgActivity)
+                            }
+                        }
+                    }
+                    XmlPullParser.TEXT ->{
+
+                    }
+                }
+                type = xml.next()
+            }
+            if (err.isNotEmpty()){
+
+                val msg = Message()
+                msg.what = 3
+                msg.obj = err.toString()
+                mHandler.sendMessage(msg)
+            }
+
+        } catch (e: XmlPullParserException) {
+            e.printStackTrace()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return sb.toString()
+    }
+
+    /**
+     * 获取旧版appfilter
+     */
+    private fun parser2(): String{
+
+        val appFilter = File(filesDir, "appfilter.xml")
+        val content = StringBuilder()
+        appFilter.forEachLine { line ->
+            content.append(line)
+            content.append("\r\n")
+        }
+
+        if (content.isNotEmpty()){
+
+            val xml = XmlPullParserFactory.newInstance().newPullParser()
+            xml.setInput(StringReader(content.toString()))
+            var type = xml.eventType
+            try {
+                while (type != XmlPullParser.END_DOCUMENT){
+                    when(type){
+                        XmlPullParser.START_TAG ->{
+                            if (xml.name == "item"){
+                                val pkgActivity = xml.getAttributeValue(0)
+                                if (pkgActivity.indexOf("{")+1 < pkgActivity.indexOf("/") && pkgActivity.indexOf("/")+1 < pkgActivity.indexOf("}")){
+                                    adaptationsOld.add(AdaptionBean(pkgActivity.substring(pkgActivity.indexOf("{")+1,pkgActivity.indexOf("/")), pkgActivity.substring(pkgActivity.indexOf("/")+1,pkgActivity.indexOf("}")),xml.getAttributeValue(0)))
+                                }
+                            }
+                        }
+                        XmlPullParser.TEXT ->{
+
+                        }
+                    }
+                    type = xml.next()
+                }
+            } catch (e: XmlPullParserException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return content.toString()
+    }
+
+    /**
+     * 保存当前版本appfilter
+     */
+    private fun saveAppFilter(appFilter: String) {
+
+        val file = File(filesDir, "appfilter-new.xml")
+        var out: FileOutputStream? = null
+        try {
+            if (!file.exists()) {
+                val files = File(file.parent)
+                files.mkdirs()
+                file.createNewFile()
+            }
+
+            out = FileOutputStream(file,false)
+            out.write(appFilter.toByteArray())
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            try {
+                out?.flush()
+                out?.close()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+
+    }
+
     override fun onBackPressed() {
-        when {
-            searchBox.visibility == View.VISIBLE -> search()
-            pager.currentItem != 0 -> pager.currentItem = 0
-            else -> super.onBackPressed()
+        if (searchBox.visibility == View.VISIBLE){
+            if (searchInput.text.isNotEmpty()){
+                searchInput.setText("")
+            }else{
+                closeKeyboard()
+                search()
+                iconsFragment.reloadIcons()
+            }
+        }else if (pager.currentItem != 0){
+            pager.currentItem = 0
+        }else{
+            super.onBackPressed()
         }
     }
 }
