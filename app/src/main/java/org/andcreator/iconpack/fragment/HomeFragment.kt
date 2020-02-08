@@ -185,7 +185,7 @@ class HomeFragment : BaseFragment() {
     //开始加载View
     private fun initView(){
         title.text = resources.getString(R.string.home_title)
-        newNumber.text = resources.getString(R.string.new_icons)
+//        newNumber.text = resources.getString(R.string.new_icons)
         Glide.with(this).load(R.drawable.logo).into(logo)
         updateWhatIcons = listOf<ImageView>(updateWhatIcons1, updateWhatIcons2, updateWhatIcons3, updateWhatIcons4, updateWhatIcons5)
         adaptWhatIcons = listOf<ImageView>(adaptWhatIcons1, adaptWhatIcons2, adaptWhatIcons3, adaptWhatIcons4, adaptWhatIcons5)
