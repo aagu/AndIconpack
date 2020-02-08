@@ -1,20 +1,15 @@
 package org.andcreator.iconpack.fragment
 
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.ActivityNotFoundException
-import android.content.ComponentName
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
 
 import org.andcreator.iconpack.R
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -22,31 +17,36 @@ import android.widget.Toast
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
+import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.os.Build
-import androidx.core.content.ContextCompat
-import org.andcreator.iconpack.activity.MainActivity
+import android.os.Handler
+import android.os.Message
+import android.view.animation.DecelerateInterpolator
+import android.widget.ImageView
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.net.URISyntaxException
-import android.os.Build.VERSION_CODES.HONEYCOMB
-import android.util.Log
-import android.view.animation.BounceInterpolator
-import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import org.andcreator.iconpack.activity.ImageDialog
+import org.andcreator.iconpack.activity.MainActivity
 import org.andcreator.iconpack.adapter.HomeIconsAdapter
-import org.andcreator.iconpack.adapter.IconsAdapter
 import org.andcreator.iconpack.bean.AdaptionBean
+import org.andcreator.iconpack.util.doAsyncTask
+import org.andcreator.iconpack.util.onUI
+import org.xmlpull.v1.XmlPullParserFactory
+import java.io.File
+import java.io.StringReader
+import java.lang.StringBuilder
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 
@@ -54,14 +54,11 @@ import kotlin.math.abs
  * A simple [Fragment] subclass.
  *
  */
-class HomeFragment : androidx.fragment.app.Fragment() {
+class HomeFragment : BaseFragment() {
 
     private var adaptations = 0
-
     private val allAdaptions = ArrayList<AdaptionBean>()
     private val newAdaptions = ArrayList<AdaptionBean>()
-
-    private val cardItemList = ArrayList<View>()
 
     companion object{
         private const val ALIPAY_PACKAGE_NAME = "com.eg.android.AlipayGphone"
@@ -70,10 +67,106 @@ class HomeFragment : androidx.fragment.app.Fragment() {
                 "clientVersion=3.7.0.0718&qrcode=https%3A%2F%2Fqr.alipay.com%2F{payCode}%3F_s" +
                 "%3Dweb-other&_t=1472443966571#Intent;" +
                 "scheme=alipayqr;package=com.eg.android.AlipayGphone;end"
+    }
 
-        private const val MIN_SCALE = 0.82f
-        private const val MIN_ALPHA = 0.6f
+    /**
+     * 新的已适配列表
+     */
+    private var adaptationsNew: ArrayList<AdaptionBean> = ArrayList()
+    /**
+     * 已适配列表
+     */
+    private var adaptationsList: ArrayList<AdaptionBean> = ArrayList()
+    /**
+     * 旧的已适配列表
+     */
+    private var adaptationsOld: ArrayList<AdaptionBean> = ArrayList()
 
+    private lateinit var updateWhatIcons: List<ImageView>
+
+    private lateinit var adaptWhatIcons: List<ImageView>
+
+    private fun startIconPreview(icon: Int, name: String){
+        val intent = Intent(context!!, ImageDialog::class.java)
+        intent.putExtra("icon",icon)
+        intent.putExtra("name",name)
+        startActivity(intent)
+    }
+
+    private var mHandler= @SuppressLint("HandlerLeak")
+    object : Handler(){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when(msg.what) {
+                1 ->{
+                    whatsNewAdaption.visibility = View.VISIBLE
+                    newNumber.text = allAdaptions.size.toString()
+
+                    for ((index, value) in allAdaptions.withIndex()){
+                        if (index == 5){
+
+                            loadAndAnimIcon(R.drawable.ic_more, updateWhatIcons6)
+
+                            updateWhatIcons6.setOnClickListener {
+                                IconsFragmentDialog.show(this@HomeFragment.childFragmentManager, "UpdateIconDialog","更新了哪些图标" , allAdaptions)
+                            }
+                            break
+                        }
+
+                        loadAndAnimIcon(context!!.resources.getIdentifier(value.icon,"drawable",context!!.packageName), updateWhatIcons[index])
+                        updateWhatIcons[index].setOnClickListener {
+                            startIconPreview(context!!.resources.getIdentifier(value.icon,"drawable",context!!.packageName), value.icon)
+                        }
+                    }
+
+                }
+                2 ->{
+                    newNumber.text = adaptationsNew.size.toString()
+                    whatsNewAdaption.visibility = View.VISIBLE
+
+                    for ((index, value) in adaptationsNew.withIndex()){
+                        if (index == 5){
+
+                            loadAndAnimIcon(R.drawable.ic_more, updateWhatIcons6)
+
+                            updateWhatIcons6.setOnClickListener {
+                                IconsFragmentDialog.show(this@HomeFragment.childFragmentManager, "UpdateIconDialog","更新了哪些图标" , adaptationsNew)
+                            }
+
+                            break
+                        }
+
+                        loadAndAnimIcon(context!!.resources.getIdentifier(value.icon,"drawable",context!!.packageName), updateWhatIcons[index])
+                        updateWhatIcons[index].setOnClickListener {
+                            startIconPreview(context!!.resources.getIdentifier(value.icon,"drawable",context!!.packageName), value.icon)
+                        }
+                    }
+
+                }
+                3 ->{
+                    whatsAdaption.visibility = View.VISIBLE
+
+                    for ((index, value) in newAdaptions.withIndex()){
+                        if (index == 5){
+
+                            loadAndAnimIcon(R.drawable.ic_more, adaptWhatIcons6)
+
+                            adaptWhatIcons6.setOnClickListener {
+                                IconsFragmentDialog.show(this@HomeFragment.childFragmentManager, "UpdateIconDialog","新适配设备上哪些图标" , newAdaptions)
+                            }
+
+                            break
+                        }
+
+                        loadAndAnimIcon(context!!.resources.getIdentifier(value.icon,"drawable",context!!.packageName), adaptWhatIcons[index])
+                        adaptWhatIcons[index].setOnClickListener {
+                            startIconPreview(context!!.resources.getIdentifier(value.icon,"drawable",context!!.packageName), value.icon)
+                        }
+                    }
+                    textView.text = "对本设备新适配了${newAdaptions.size}应用"
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -89,16 +182,15 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         initView()
     }
 
+    //开始加载View
     private fun initView(){
         title.text = resources.getString(R.string.home_title)
-        introduction.text = resources.getString(R.string.home_subtitle)
-
         newNumber.text = resources.getString(R.string.new_icons)
+        Glide.with(this).load(R.drawable.logo).into(logo)
+        updateWhatIcons = listOf<ImageView>(updateWhatIcons1, updateWhatIcons2, updateWhatIcons3, updateWhatIcons4, updateWhatIcons5)
+        adaptWhatIcons = listOf<ImageView>(adaptWhatIcons1, adaptWhatIcons2, adaptWhatIcons3, adaptWhatIcons4, adaptWhatIcons5)
 
-        cardPager.clipToPadding = false
-        cardPager.setPadding(160, 0, 160, 0)
-        cardPager.pageMargin = 60
-        cardPager.setPageTransformer(false, DepthPageTransformer())
+//        startIntentUrl(INTENT_URL_FORMAT.replace("{payCode}", resources.getString(R.string.alipay_code)))
 
         iconsPage.setOnClickListener {
             callbacks.callback(1)
@@ -112,123 +204,182 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             startHttp(resources.getString(R.string.home_link))
         }
 
-        for (card in 0..2){
-
-            val cardItem = LayoutInflater.from(context).inflate(R.layout.home_card, null)
-
-            when (card){
-                0 -> {
-                    Glide.with(context!!).load(R.drawable.alipay).into(cardItem.findViewById(R.id.cardImage))
-                    cardItem.findViewById<TextView>(R.id.cardText).text = "如果您能够捐赠我，我将非常感谢"
-                    cardItem.findViewById<CardView>(R.id.card).setOnClickListener {
-
-                        cardPager.currentItem = 0
-                        startIntentUrl(INTENT_URL_FORMAT.replace("{payCode}", resources.getString(R.string.alipay_code)))
-                    }
-                }
-                1 -> {
-                    Glide.with(context!!).load(R.drawable.banner).into(cardItem.findViewById(R.id.cardImage))
-                    cardItem.findViewById<TextView>(R.id.cardText).text = "Marshmallow Icons"
-                    cardItem.findViewById<CardView>(R.id.card).setOnClickListener {
-
-                        cardPager.currentItem = 1
-                        val x = ObjectAnimator.ofFloat(cardItem, "scaleX", 1f, 0.76f, 1f).setDuration(600)
-                        x.interpolator = BounceInterpolator()
-                        val y = ObjectAnimator.ofFloat(cardItem, "scaleY", 1f, 0.76f, 1f).setDuration(600)
-                        y.interpolator = BounceInterpolator()
-                        x.start()
-                        y.start()
-                    }
-                }
-                2 -> {
-                    Glide.with(context!!).load(R.drawable.stars).into(cardItem.findViewById(R.id.cardImage))
-                    cardItem.findViewById<TextView>(R.id.cardText).text = "请为这个作品进行评价"
-                    cardItem.findViewById<CardView>(R.id.card).setOnClickListener {
-
-                        cardPager.currentItem = 2
-                        openAppStore(packageName = context!!.packageName)
-                    }
-                }
-            }
-
-            cardItemList.add(cardItem)
-        }
-
-        cardPager.adapter = SectionsPagerAdapter(cardItemList)
-        cardPager.offscreenPageLimit = 3
-        cardPager.currentItem = 1
-
-        doAsync{
+        doAsyncTask {
             parser()
-            uiThread {
-                iconNumber.text = adaptations.toString()
+            if (isDestroyed){
+                onUI {
+                    iconNumber.text = adaptations.toString()
+                }
             }
         }
 
-        contributeClose.setOnClickListener {
-            val closeAnimation = ObjectAnimator.ofFloat(contribute, "alpha", 1f, 0f).setDuration(600)
-            closeAnimation.addListener(object : AnimatorListenerAdapter() {
-                override fun onAnimationEnd(animation: Animator?) {
-                    super.onAnimationEnd(animation)
-                    contribute.visibility = View.GONE
-                }
-            })
-            closeAnimation.start()
+        card.setOnClickListener {
+            openAppStore(packageName = context!!.packageName)
         }
 
-        contribute.setOnClickListener {
+        donate.setOnClickListener {
             startIntentUrl(INTENT_URL_FORMAT.replace("{payCode}", resources.getString(R.string.alipay_code)))
+        }
+
+
+        adaptationsList = (activity!! as MainActivity).adaptations
+        showUpdateIcons(adaptationsList)
+    }
+
+    private fun showUpdateIcons(adaptationsList: ArrayList<AdaptionBean>) {
+
+        doAsyncTask {
+            if (File(context!!.filesDir, "appfilter.xml").exists()){
+                //获取旧版数据
+                if (parser2().isNotEmpty()){
+                    for (v in adaptationsList) {
+                        if (checkIndexOf(adaptationsOld, v) < 0){
+                            adaptationsNew.add(v)
+                        }
+                    }
+                    //相对于旧版更新了哪些图标
+                    getNewIcons(adaptationsNew)
+                }else{
+                    //第一次安装直接显示所有图标
+                    showAll(this@HomeFragment.adaptationsList)
+                }
+            }
         }
     }
 
-    fun showAll(iconsList: ArrayList<AdaptionBean>){
+    private fun loadAndAnimIcon(drawable: Int, icon: ImageView){
+
+        icon.visibility = View.INVISIBLE
+
+        Glide.with(this).load(drawable).listener(object : RequestListener<Drawable> {
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: Target<Drawable>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                icon.post {
+                    iconAnimator(icon)
+                }
+                return false
+            }
+
+        }).into(icon)
+    }
+
+    private fun iconAnimator(v: View){
+
+        val animator = ValueAnimator()
+        animator.setFloatValues(0f, 1f)
+        animator.interpolator = DecelerateInterpolator()
+        animator.duration = 600
+        animator.addUpdateListener {
+            v.scaleX = it.animatedValue as Float
+            v.scaleY = it.animatedValue as Float
+        }
+        animator.start()
+        v.visibility = View.VISIBLE
+    }
+
+    private fun checkIndexOf(list: ArrayList<AdaptionBean>, item: AdaptionBean): Int{
+        for (index in list.indices){
+            if (list[index].pagName == item.pagName || list[index].icon == item.icon ){
+                return index
+            }
+        }
+        return -1
+    }
+
+    /**
+     * 获取旧版appfilter
+     */
+    private fun parser2(): String{
+
+        val appFilter = File(context!!.filesDir, "appfilter.xml")
+        val content = StringBuilder()
+        appFilter.forEachLine { line ->
+            content.append(line)
+            content.append("\r\n")
+        }
+
+        if (content.isNotEmpty()){
+
+            val xml = XmlPullParserFactory.newInstance().newPullParser()
+            xml.setInput(StringReader(content.toString()))
+            var type = xml.eventType
+            try {
+                while (type != XmlPullParser.END_DOCUMENT){
+                    when(type){
+                        XmlPullParser.START_TAG ->{
+                            if (xml.name == "item"){
+                                val pkgActivity = xml.getAttributeValue(0)
+                                if (pkgActivity.indexOf("{")+1 < pkgActivity.indexOf("/") && pkgActivity.indexOf("/")+1 < pkgActivity.indexOf("}")){
+                                    adaptationsOld.add(AdaptionBean(pkgActivity.substring(pkgActivity.indexOf("{")+1,pkgActivity.indexOf("/")), pkgActivity.substring(pkgActivity.indexOf("/")+1,pkgActivity.indexOf("}")),xml.getAttributeValue(0)))
+                                }
+                            }
+                        }
+                        XmlPullParser.TEXT ->{
+
+                        }
+                    }
+                    type = xml.next()
+                }
+            } catch (e: XmlPullParserException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return content.toString()
+    }
+
+    /**
+     * 更新了哪些图标(直接展示所有图标)
+     */
+    private fun showAll(iconsList: ArrayList<AdaptionBean>){
+
         if (allAdaptions.size < 1) {
             parser()
         }
-        if (iconsList.size > 0){
-            whatsNewAdaption.visibility = View.VISIBLE
-            updateIcons.visibility = View.VISIBLE
+        if (iconsList.size > 0 && isDestroyed){
+            val msg = Message()
+            msg.what = 1
+            mHandler.sendMessage(msg)
         }else{
             return
         }
-        newNumber.text = allAdaptions.size.toString()
-        updateIcons.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val adapter = HomeIconsAdapter(context!!, allAdaptions)
-        updateIcons.adapter = adapter
-        adapter.setClickListener(object : HomeIconsAdapter.OnItemClickListener{
-            override fun onClick(icon: Int, name: String) {
-                val intent = Intent(context!!, ImageDialog::class.java)
-                intent.putExtra("icon",icon)
-                intent.putExtra("name",name)
-                startActivity(intent)
-            }
-        })
-        showAdaptions(iconsList)
-    }
-
-    fun getNewIcons(iconsList: ArrayList<AdaptionBean>){
-        newNumber.text = iconsList.size.toString()
-        if (iconsList.size > 0){
-            whatsNewAdaption.visibility = View.VISIBLE
-            updateIcons.visibility = View.VISIBLE
-        }else{
-            return
-        }
-        updateIcons.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        val adapter = HomeIconsAdapter(context!!, iconsList)
-        updateIcons.adapter = adapter
-        adapter.setClickListener(object : HomeIconsAdapter.OnItemClickListener{
-            override fun onClick(icon: Int, name: String) {
-                val intent = Intent(context!!, ImageDialog::class.java)
-                intent.putExtra("icon",icon)
-                intent.putExtra("name",name)
-                startActivity(intent)
-            }
-        })
 
         showAdaptions(iconsList)
     }
 
+    /**
+     * 更新了哪些图标
+     */
+    private fun getNewIcons(iconsList: ArrayList<AdaptionBean>){
+        if (iconsList.size > 0 && isDestroyed){
+            val msg = Message()
+            msg.what = 2
+            mHandler.sendMessage(msg)
+        }else{
+            return
+        }
+
+        showAdaptions(iconsList)
+    }
+
+    /**
+     * 新适配设备上哪些图标
+     */
     private fun showAdaptions(iconsList: ArrayList<AdaptionBean>){
         newAdaptions.clear()
         val pm = context!!.packageManager
@@ -249,24 +400,10 @@ class HomeFragment : androidx.fragment.app.Fragment() {
             }
         }
 
-        if (newAdaptions.size > 0){
-            whatsAdaption.visibility = View.VISIBLE
-            adaptationIcons.visibility = View.VISIBLE
-            contribute.visibility = View.VISIBLE
-
-            adaptationIcons.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            val adapter = HomeIconsAdapter(context!!, newAdaptions)
-            adaptationIcons.adapter = adapter
-            adapter.setClickListener(object : HomeIconsAdapter.OnItemClickListener{
-                override fun onClick(icon: Int, name: String) {
-                    val intent = Intent(context!!, ImageDialog::class.java)
-                    intent.putExtra("icon",icon)
-                    intent.putExtra("name",name)
-                    startActivity(intent)
-                }
-            })
-
-            adaptionNumber.text = "对本设备新适配了${newAdaptions.size}应用"
+        if (newAdaptions.size > 0 && isDestroyed){
+            val msg = Message()
+            msg.what = 3
+            mHandler.sendMessage(msg)
         }
     }
 
@@ -371,59 +508,8 @@ class HomeFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    /**
-     * A [FragmentPagerAdapter] that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    inner class SectionsPagerAdapter (private val listView: List<View>) : PagerAdapter() {
-
-        override fun isViewFromObject(view: View, `object`: Any): Boolean {
-            return view === `object`
-        }
-
-        override fun getCount(): Int {
-            return listView.size
-        }
-
-        override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            container.addView(listView[position])
-            return listView[position]
-        }
-
-        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-            container.removeView(listView[position])
-        }
-    }
-
-    @TargetApi(HONEYCOMB)
-    inner class DepthPageTransformer : ViewPager.PageTransformer {
-
-        @TargetApi(HONEYCOMB)
-        @SuppressLint("NewApi")
-        override fun transformPage(view: View, position: Float) {
-            if (position < -1) { // [-Infinity,-1)
-                // This page is way off-screen to the left.
-                view.scaleY = MIN_SCALE
-                view.alpha = MIN_ALPHA
-            } else if (position == 0f) { // [-1,0]
-                // Use the default slide transition when moving to the left page
-                view.scaleY = MIN_SCALE
-                view.alpha = MIN_ALPHA
-            } else if (position <= 1) { // (0,1]
-                // Fade the page out.
-
-                // Counteract the default slide transition
-
-                // Scale the page down (between MIN_SCALE and 1)
-                val scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - abs(position))
-                val alphaFactor = MIN_ALPHA + (1 - MIN_ALPHA) * (1 - abs(position))
-                view.scaleY = scaleFactor
-                view.alpha = alphaFactor
-            } else { // (1,+Infinity]
-                // This page is way off-screen to the right.
-                view.scaleY = MIN_SCALE
-                view.alpha = MIN_ALPHA
-            }
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        mHandler.removeCallbacksAndMessages(null)
     }
 }

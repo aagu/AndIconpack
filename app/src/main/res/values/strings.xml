@@ -22,11 +22,11 @@
     <string name="designer_message">图标包创作者</string>
     <string name="mail">hujincan15369@Gmail.com</string>
 
-    <!-- 手动解析二维码获得地址中的参数，例如 https://qr.alipay.com/tsx083367dghotyahi8lq2e 最后那段 -->
+    <!-- 手动解析二维码获得地址中的参数,一定记得先开通商家收款码，例如 https://qr.alipay.com/tsx083367dghotyahi8lq2e 最后那段 -->
     <string name="alipay_code" translatable="false">tsx083367dghotyahi8lq2e</string>
 
     <!-- 更新了啥？ -->
-    <string name="update_content" translatable="false">• 更新了XXXXXXXXXXXXXXXXXXX\n\n• 更新了XXXXXXXXXXXXXXXXXXX\n\n• 更新了XXXXXXXXXXXXXXXXXXX</string>
+    <string name="update_content" translatable="false">• 优化APP启动速度\n\n• 更新了很多自动化的功能\n\n• 开发者QQ: 2530767709</string>
 
 
     <!-- 更多信息前往main/java/packageName/AboutFragment.java 修改 -->
@@ -37,6 +37,7 @@
     <string name="download">下载</string>
     <string name="cancel">取消</string>
     <string name="close">关闭</string>
+    <string name="cool">酷</string>
 
     <string name="send_mail_please">请发送Mail，邮箱账号已复制到剪贴板</string>
     <string name="send_mail_to">发送至..</string>

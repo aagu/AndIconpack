@@ -34,6 +34,8 @@ import kotlinx.android.synthetic.main.fragment_request.*
 import kotlinx.android.synthetic.main.fragment_request.loading
 import org.andcreator.iconpack.bean.AdaptionBean
 import org.andcreator.iconpack.util.Utils
+import org.andcreator.iconpack.util.doAsyncTask
+import org.andcreator.iconpack.util.onUI
 import org.jetbrains.anko.displayMetrics
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -51,7 +53,7 @@ import kotlin.collections.ArrayList
  * A simple [Fragment] subclass.
  *
  */
-class RequestFragment : androidx.fragment.app.Fragment() {
+class RequestFragment : BaseFragment() {
 
     /**
      * 未适配列表
@@ -121,18 +123,18 @@ class RequestFragment : androidx.fragment.app.Fragment() {
 
         })
 
-        doAsync{
+        doAsyncTask {
             parser()
             loadData()
-            uiThread{
-                if (loading.visibility == View.VISIBLE){
-                    loading.visibility = View.GONE
+            if (isDestroyed){
+                onUI {
+                    if (loading.visibility == View.VISIBLE){
+                        loading.visibility = View.GONE
+                    }
+                    adapter.notifyDataSetChanged()
                 }
-                adapter.notifyDataSetChanged()
-
             }
         }
-
     }
 
     fun send() {

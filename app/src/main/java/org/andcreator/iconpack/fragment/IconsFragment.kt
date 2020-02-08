@@ -9,12 +9,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 
 import org.andcreator.iconpack.R
 import org.andcreator.iconpack.activity.ImageDialog
 import org.andcreator.iconpack.adapter.IconsAdapter
 import org.andcreator.iconpack.bean.IconsBean
 import kotlinx.android.synthetic.main.fragment_icons.*
+import org.andcreator.iconpack.util.doAsyncTask
+import org.andcreator.iconpack.util.onUI
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import org.xmlpull.v1.XmlPullParser
@@ -25,7 +28,7 @@ import java.io.IOException
  * A simple [Fragment] subclass.
  *
  */
-class IconsFragment : androidx.fragment.app.Fragment() {
+class IconsFragment : BaseFragment() {
 
     private val iconsList = ArrayList<IconsBean>()
     private var searchIconsList = ArrayList<IconsBean>()
@@ -48,7 +51,9 @@ class IconsFragment : androidx.fragment.app.Fragment() {
         recyclerIcons.layoutManager = GridLayoutManager(context, 4)
         adapter = IconsAdapter(context!!,iconsList)
         recyclerIcons.adapter = adapter
+        recyclerIcons.addOnScrollListener(object : HideScrollListener() {
 
+        })
         adapter.setClickListener(object : IconsAdapter.OnItemClickListener{
             override fun onClick(icon: Int, name: String) {
                 val intent = Intent(context!!, ImageDialog::class.java)
@@ -103,16 +108,17 @@ class IconsFragment : androidx.fragment.app.Fragment() {
     fun search(name: String) {
         if (name.isNotEmpty()){
 
-            doAsync {
+            doAsyncTask {
                 iconsList.clear()
                 for (iconName in searchIconsList) {
                     if (iconName.name.contains(name, true)) {
                         iconsList.add(iconName)
                     }
                 }
-
-                uiThread {
-                    adapter.notifyDataSetChanged()
+                if (isDestroyed){
+                    onUI {
+                        adapter.notifyDataSetChanged()
+                    }
                 }
             }
         }else{
@@ -121,18 +127,61 @@ class IconsFragment : androidx.fragment.app.Fragment() {
     }
 
     fun reloadIcons() {
-
-        doAsync {
+        doAsyncTask {
             loadIcons()
-            uiThread {
-                if (loading.visibility == View.VISIBLE){
-                    loading.visibility = View.GONE
+            if (isDestroyed){
+                onUI {
+                    if (loading.visibility == View.VISIBLE){
+                        loading.visibility = View.GONE
+                    }
+                    adapter.notifyDataSetChanged()
+                    searchIconsList.clear()
+                    searchIconsList = iconsList.clone() as ArrayList<IconsBean>
                 }
-                adapter.notifyDataSetChanged()
-                searchIconsList.clear()
-                searchIconsList = iconsList.clone() as ArrayList<IconsBean>
             }
         }
-
     }
+
+    interface Callbacks {
+        fun callback(position: Int)
+    }
+
+    private lateinit var callbacks: Callbacks
+
+    fun setCallbackListener(callbacks: Callbacks) {
+        this.callbacks = callbacks
+    }
+
+    private fun onHide() {
+        callbacks.callback(0)
+    }
+
+    private fun onShow() {
+        callbacks.callback(1)
+    }
+
+    //滑动监听
+    internal open inner class HideScrollListener : RecyclerView.OnScrollListener() {
+        private val HIDE_HEIGHT = 40
+        private var scrolledInstance = 0
+        private var toolbarVisible = true
+
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            super.onScrolled(recyclerView, dx, dy)
+            if (toolbarVisible && dy > 0 || !toolbarVisible && dy < 0) {
+                //recycler向上滚动时dy为正，向下滚动时dy为负数
+                scrolledInstance += dy
+            }
+            if (scrolledInstance > HIDE_HEIGHT && toolbarVisible) {//当recycler向上滑动距离超过设置的默认值并且toolbar可见时，隐藏toolbar和fab
+                onHide()
+                scrolledInstance = 0
+                toolbarVisible = false
+            } else if (scrolledInstance < -HIDE_HEIGHT && !toolbarVisible) {//当recycler向下滑动距离超过设置的默认值并且toolbar不可见时，显示toolbar和fab
+                onShow()
+                scrolledInstance = 0
+                toolbarVisible = true
+            }
+        }
+    }
+
 }

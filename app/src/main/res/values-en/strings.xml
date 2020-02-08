@@ -28,6 +28,7 @@
     <string name="download">Download</string>
     <string name="cancel">Cancel</string>
     <string name="close">Close</string>
+    <string name="cool">Cool</string>
 
     <string name="send_mail_please">Sent mail please,the e-mail account number has been copied to the clipboard</string>
     <string name="send_mail_to">Send mail to..</string>
