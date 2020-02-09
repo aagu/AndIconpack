@@ -348,9 +348,9 @@ class HomeFragment : BaseFragment() {
      */
     private fun showAll(iconsList: ArrayList<AdaptionBean>){
 
-        if (allAdaptions.size < 1) {
-            parser()
-        }
+//        if (allAdaptions.size < 1) {
+//            parser()
+//        }
         if (iconsList.size > 0 && isDestroyed){
             val msg = Message()
             msg.what = 1
