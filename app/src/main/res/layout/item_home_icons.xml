@@ -8,7 +8,7 @@
         android:layout_height="58dp"
         android:id="@+id/icons"
         android:foreground="?attr/selectableItemBackground"
-        android:layout_margin="16dp"
+        android:layout_margin="12dp"
         android:scaleType="fitCenter"
         android:clickable="true"
         android:focusable="true"/>

@@ -51,7 +51,7 @@ object Utils {
     /**
      * 获取App版本号
      */
-    fun getAppVersion(context: Context): Int{
+    fun getAppVersion(context: Context): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             context.packageManager.getPackageInfo(context.packageName, 0).longVersionCode.toInt()
         } else {
@@ -62,7 +62,7 @@ object Utils {
     /**
      * 获取App版本号名称
      */
-    fun getAppVersionName(context: Context): String{
+    fun getAppVersionName(context: Context): String {
         return context.packageManager.getPackageInfo(context.packageName, 0).versionName
 
     }
@@ -90,7 +90,7 @@ object Utils {
     fun copy(content: String, context: Context) {
         // 得到剪贴板管理器
         val cmb = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val data = ClipData.newPlainText(context.getString(R.string.app_name),content.trim())
+        val data = ClipData.newPlainText(context.getString(R.string.app_name), content.trim())
         cmb.setPrimaryClip(data)
     }
 

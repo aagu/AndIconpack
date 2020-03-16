@@ -12,6 +12,8 @@ import org.andcreator.iconpack.R
 import org.andcreator.iconpack.adapter.AboutAdapter
 import org.andcreator.iconpack.bean.AboutBean
 import kotlinx.android.synthetic.main.fragment_about.*
+import org.andcreator.iconpack.util.doAsyncTask
+import org.andcreator.iconpack.util.onUI
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -20,7 +22,7 @@ import org.jetbrains.anko.uiThread
  * A simple [Fragment] subclass.
  *
  */
-class AboutFragment : androidx.fragment.app.Fragment() {
+class AboutFragment : BaseFragment() {
 
     private val credits = ArrayList<AboutBean>()
     private lateinit var adapter: AboutAdapter
@@ -43,13 +45,15 @@ class AboutFragment : androidx.fragment.app.Fragment() {
         adapter = AboutAdapter(context!!,credits)
         recyclerAbout.adapter = adapter
 
-        doAsync {
+        doAsyncTask {
             loadData()
-            uiThread {
-                if (loading.visibility == View.VISIBLE){
-                    loading.visibility = View.GONE
+            if (isDestroyed){
+                onUI {
+                    if (loading.visibility == View.VISIBLE){
+                        loading.visibility = View.GONE
+                    }
+                    adapter.notifyDataSetChanged()
                 }
-                adapter.notifyDataSetChanged()
             }
         }
     }

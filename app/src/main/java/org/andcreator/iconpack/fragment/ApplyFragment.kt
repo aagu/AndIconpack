@@ -21,6 +21,8 @@ import org.andcreator.iconpack.bean.LauncherItem
 import org.andcreator.iconpack.holder.LauncherHolder
 import org.andcreator.iconpack.util.Utils
 import kotlinx.android.synthetic.main.fragment_apply.*
+import org.andcreator.iconpack.util.doAsyncTask
+import org.andcreator.iconpack.util.onUI
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.ArrayList
@@ -29,7 +31,7 @@ import java.util.ArrayList
  * A simple [Fragment] subclass.
  *
  */
-class ApplyFragment : androidx.fragment.app.Fragment() {
+class ApplyFragment : BaseFragment() {
 
     private val launchers = ArrayList<LauncherItem>()
     private lateinit var adapter: LauncherAdapter
@@ -101,13 +103,15 @@ class ApplyFragment : androidx.fragment.app.Fragment() {
         })
         recyclerLaunchers.adapter = adapter
 
-        doAsync {
+        doAsyncTask {
             getLaunchers()
-            uiThread {
-                if (loading.visibility == View.VISIBLE){
-                    loading.visibility = View.GONE
+            if(isDestroyed){
+                onUI {
+                    if (loading.visibility == View.VISIBLE){
+                        loading.visibility = View.GONE
+                    }
+                    adapter.notifyDataSetChanged()
                 }
-                adapter.notifyDataSetChanged()
             }
         }
     }
