@@ -18,6 +18,9 @@
     <color name="black_text">#222222</color>
     <color name="text_color">#666666</color>
 
+    <color name="transition">#00000000</color>
+    <color name="windowBackground">#00000000</color>
+    <color name="transitionBackground">#00000000</color>
     <color name="fastscroll_thumb_inactive_color">#666666</color>
     <color name="fastscroll_thumb_active_color">#2d9bf3</color>
 

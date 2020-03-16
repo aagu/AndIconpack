@@ -4,6 +4,7 @@ import android.Manifest
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.content.Context
@@ -15,10 +16,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.os.Build
-import android.os.Bundle
-import android.os.Handler
-import android.os.Message
+import android.os.*
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -34,11 +32,19 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import org.andcreator.iconpack.R
 import org.andcreator.iconpack.fragment.*
 import org.andcreator.iconpack.listener.AppBarStateChangeListener
@@ -63,41 +69,35 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: SectionsPagerAdapter
-    private var fabStatus = 1
     private lateinit var requestsFragment: RequestFragment
-    private var homeFragment: HomeFragment? = null
     private lateinit var iconsFragment: IconsFragment
+    private lateinit var homeFragment: HomeFragment
+    private lateinit var applyFragment: ApplyFragment
+    private lateinit var aboutFragment: AboutFragment
     private val icons = ArrayList<Int>()
     private var tabTextColor = 0xffffff
-    private lateinit var saveThread: Thread
+    private var fabStatus = 1
 
     /**
      * 获取未授权的权限
      */
-    private lateinit var permissionList:MutableList<String>
+    private lateinit var permissionList: MutableList<String>
 
     /**
      * 请求权限的返回值
      */
     private val permissionCode = 1
+
     /**
      * 已适配列表
      */
-    private var adaptations: ArrayList<AdaptionBean> = ArrayList()
-    /**
-     * 旧的已适配列表
-     */
-    private var adaptationsOld: ArrayList<AdaptionBean> = ArrayList()
+    var adaptations: ArrayList<AdaptionBean> = ArrayList()
 
-    /**
-     * 旧的已适配列表
-     */
-    private var adaptationsNew: ArrayList<AdaptionBean> = ArrayList()
-
-    private var mHandler= @SuppressLint("HandlerLeak")
+    private var mHandler = @SuppressLint("HandlerLeak")
     object : Handler(){
-        override fun handleMessage(msg: Message?) {
-            when(msg!!.what){
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            when(msg.what){
                 1 -> {
                     explore()
                 }
@@ -105,7 +105,6 @@ class MainActivity : AppCompatActivity() {
                     updateContent()
                 }
                 3 ->{
-
                     val data = msg.obj.toString()
                     AlertDialog.Builder(this@MainActivity)
                         .setTitle("出现错误")
@@ -123,27 +122,25 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //API支持就更改Android NavigationBar Color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             window.navigationBarColor = ContextCompat.getColor(this, R.color.backgroundColor)
         }else{
             window.navigationBarColor = Color.BLACK
         }
         setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
-
-        tabTextColor = ContextCompat.getColor(this@MainActivity,R.color.white)
-        checkVersion()
         getPermission()
+        setSupportActionBar(toolbar)
+        checkVersion()
         initView()
         checkChangeLog()
 
     }
 
     private fun initView(){
-//        val wallpaperManager = WallpaperManager.getInstance(this)
-//        Glide.with(this).load(wallpaperManager.drawable).into(headImg)
 
         loadIcons()
+        tabTextColor = ContextCompat.getColor(this@MainActivity,R.color.white)
         collapsingToolbar.setExpandedTitleColor(tabTextColor) //设置还没收缩时状态下字体颜色
         collapsingToolbar.setCollapsedTitleTextColor(ContextCompat.getColor(this@MainActivity,R.color.black_text))//设置收缩后Toolbar上字体的颜色
         collapsingToolbar.title = resources.getString(R.string.app_name)
@@ -179,7 +176,7 @@ class MainActivity : AppCompatActivity() {
 
         searchInput.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(p0: Editable?) {
-                iconsFragment.search(p0.toString())
+//                iconsFragment.search(p0.toString())
                 Log.e("SearchTextChange1", p0.toString())
             }
 
@@ -212,7 +209,6 @@ class MainActivity : AppCompatActivity() {
                         closeSearch()
                     }
                     1 ->{
-                        iconsFragment = adapter.getFragment(1) as IconsFragment
                         if (fabStatus!=1){
                             fabStatus = 1
                             changeFabIcon(R.drawable.ic_search_white_24dp)
@@ -222,16 +218,6 @@ class MainActivity : AppCompatActivity() {
                     2 ->{
                         fabStatus = 2
                         changeFabIcon(R.drawable.ic_send_white_24dp)
-                        requestsFragment = adapter.getFragment(2) as RequestFragment
-                        requestsFragment.setCallbackListener(object : RequestFragment.Callbacks{
-                            override fun callback(position: Int) {
-                                when (position) {
-                                    0 -> hide(fabSend)
-                                    1 -> show(fabSend)
-                                    2 -> SnackbarUtil().SnackbarUtil(this@MainActivity, fabSend ,resources.getString(R.string.no_choose_app))
-                                }
-                            }
-                        })
                         closeSearch()
                     }
                     3 ->{
@@ -364,34 +350,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-
-        if (homeFragment == null){
-            homeFragment = adapter.getFragment(0) as HomeFragment
-            homeFragment!!.setCallbackListener(object : HomeFragment.Callbacks{
-                override fun callback(position: Int) {
-                    when(position) {
-                        1 -> pager.currentItem = 1
-                        2 -> updateContent()
-                    }
-                }
-            })
-            showUpdateIcons()
-        }
-    }
-
-    private var threadIndex = 0
-
-    private fun showUpdateIcons(){
-
-        threadIndex++
-        if (threadIndex < 2){
-            return
-        }
-        check()
-    }
-
     private fun closeKeyboard(){
         searchInput.clearFocus()
         val `in` = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
@@ -406,9 +364,10 @@ class MainActivity : AppCompatActivity() {
 
         val wallpaperManager = WallpaperManager.getInstance(this)
 
-        Glide.with(this@MainActivity).load(drawableToBitmap(wallpaperManager.drawable)).into(headImg)
+        Glide.with(this@MainActivity).load(wallpaperManager.drawable).transition(
+            DrawableTransitionOptions().crossFade(300)).into(headImg)
 
-        doAsync{
+        doAsyncTask {
 
             tabTextColor = if (getBright(Bitmap.createScaledBitmap(drawableToBitmap(wallpaperManager.drawable), 500, 300, false)) > 220){
                 ContextCompat.getColor(this@MainActivity, R.color.text_color)
@@ -416,12 +375,12 @@ class MainActivity : AppCompatActivity() {
                 ContextCompat.getColor(this@MainActivity, R.color.white)
             }
 
-            uiThread {
-
-                collapsingToolbar.setExpandedTitleColor(tabTextColor) //设置还没收缩时状态下字体颜色
-                tab.tabTextColors = ColorStateList.valueOf(tabTextColor)
-                tab.setSelectedTabIndicatorColor(tabTextColor)
-
+            if (!isDestroyed){
+                onUI {
+                    collapsingToolbar.setExpandedTitleColor(tabTextColor) //设置还没收缩时状态下字体颜色
+                    tab.tabTextColors = ColorStateList.valueOf(tabTextColor)
+                    tab.setSelectedTabIndicatorColor(tabTextColor)
+                }
             }
         }
     }
@@ -493,81 +452,54 @@ class MainActivity : AppCompatActivity() {
      */
     private fun checkVersion() {
 
-        saveThread = object : Thread(){
-            override fun run() {
-                super.run()
 
-                //判断是否首次打开软件
-                if (!PreferencesUtil.get(this@MainActivity, "first", false)){
-                    PreferencesUtil.put(this@MainActivity, "first", true)
-                    PreferencesUtil.put(this@MainActivity, "versionCode", Utils.getAppVersion(this@MainActivity))
+        doAsyncTask{
 
-                    //保存到新文件
-                    saveAppFilter(parser())
+            //判断是否首次打开软件
+            if (!PreferencesUtil.get(this@MainActivity, "first", false)){
+                PreferencesUtil.put(this@MainActivity, "first", true)
+                PreferencesUtil.put(this@MainActivity, "versionCode", Utils.getAppVersion(this@MainActivity))
 
-                    val file = File(filesDir, "appfilter.xml")
-                    val files = File(file.parent)
-                    files.mkdirs()
-                    file.createNewFile()
+                //保存到新文件
+                saveAppFilter(parser())
 
-                    val msg = Message()
-                    msg.what = 1
-                    mHandler.sendMessage(msg)
+                val file = File(filesDir, "appfilter.xml")
+                val files = File(file.parent)
+                files.mkdirs()
+                file.createNewFile()
 
-                }
+                val msg = Message()
+                msg.what = 1
+                mHandler.sendMessage(msg)
 
-                //判断是否首次更新软件
-                if (PreferencesUtil.get(this@MainActivity, "versionCode", -1) != -1 && PreferencesUtil.get(this@MainActivity, "versionCode", -1) != Utils.getAppVersion(this@MainActivity)){
-
-                    //不是首次更新，将旧版更改为上个版本的数据
-                    try {
-                        if (File(filesDir, "appfilter.xml").delete()){
-                            val files = File(filesDir, "appfilter.xml")
-                            File(filesDir, "appfilter-new.xml").renameTo(files)
-                        }
-                    }catch (e: IOException){
-
-                    }
-                    //新版本保存到新文件(获取新版数据)
-                    saveAppFilter(parser())
-                    val msg = Message()
-                    msg.what = 2
-                    mHandler.sendMessage(msg)
-                    PreferencesUtil.put(this@MainActivity, "versionCode", Utils.getAppVersion(this@MainActivity))
-                }else{
-                    parser()
-                }
-                showUpdateIcons()
             }
-        }
 
-        saveThread.start()
-    }
+            //判断是否首次更新软件
+            if (PreferencesUtil.get(this@MainActivity, "versionCode", -1) != -1 && PreferencesUtil.get(this@MainActivity, "versionCode", -1) != Utils.getAppVersion(this@MainActivity)){
 
-    private fun check(){
-
-        if (File(filesDir, "appfilter.xml").exists()){
-            //获取旧版数据
-            if (parser2().isNotEmpty()){
-                for (v in adaptations) {
-                    if (checkIndexOf(adaptationsOld, v) < 0){
-                        adaptationsNew.add(v)
+                //不是首次更新，将旧版更改为上个版本的数据
+                try {
+                    if (File(filesDir, "appfilter.xml").delete()){
+                        val files = File(filesDir, "appfilter.xml")
+                        File(filesDir, "appfilter-new.xml").renameTo(files)
                     }
+                }catch (e: IOException){
+
                 }
-                homeFragment!!.getNewIcons(adaptationsNew)
+                //新版本保存到新文件(获取新版数据)
+                saveAppFilter(parser())
+                val msg = Message()
+                msg.what = 2
+                mHandler.sendMessage(msg)
+                PreferencesUtil.put(this@MainActivity, "versionCode", Utils.getAppVersion(this@MainActivity))
             }else{
-                homeFragment!!.showAll(adaptations)
+                parser()
             }
-        }
-    }
 
-    private fun checkIndexOf(list: ArrayList<AdaptionBean>, item: AdaptionBean): Int{
-        for (index in list.indices){
-            if (list[index].pagName == item.pagName || list[index].icon == item.icon ){
-                return index
-            }
+            val msg = Message()
+            msg.what = 4
+            mHandler.sendMessage(msg)
         }
-        return -1
     }
 
     /**
@@ -657,12 +589,67 @@ class MainActivity : AppCompatActivity() {
         }
     }*/
 
+    @SuppressLint("MissingSuperCall")
+    override fun onSaveInstanceState(outState: Bundle) {
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        homeFragment.setCallbackListener(object : HomeFragment.Callbacks{
+            override fun callback(position: Int) {
+                when(position) {
+                    1 -> pager.currentItem = 1
+                    2 -> updateContent()
+                }
+            }
+        })
+    }
+
     private fun setupViewPager(viewPager: ViewPager) {
-        adapter.addFragment(HomeFragment(),resources.getString(R.string.home))
-        adapter.addFragment(IconsFragment(),resources.getString(R.string.icons))
-        adapter.addFragment(RequestFragment(),resources.getString(R.string.icon_adapter))
-        adapter.addFragment(ApplyFragment(),resources.getString(R.string.apply))
-        adapter.addFragment(AboutFragment(),resources.getString(R.string.about))
+        homeFragment = HomeFragment()
+        iconsFragment = IconsFragment()
+        requestsFragment = RequestFragment()
+        applyFragment = ApplyFragment()
+        aboutFragment = AboutFragment()
+        homeFragment.retainInstance = true
+        iconsFragment.retainInstance = true
+        requestsFragment.retainInstance = true
+        applyFragment.retainInstance = true
+        aboutFragment.retainInstance = true
+
+        homeFragment.setCallbackListener(object : HomeFragment.Callbacks{
+            override fun callback(position: Int) {
+                when(position) {
+                    1 -> pager.currentItem = 1
+                    2 -> updateContent()
+                }
+            }
+        })
+        requestsFragment.setCallbackListener(object : RequestFragment.Callbacks{
+            override fun callback(position: Int) {
+                when (position) {
+                    0 -> hide(fabSend)
+                    1 -> show(fabSend)
+                    2 -> SnackbarUtil().SnackbarUtil(this@MainActivity, fabSend ,resources.getString(R.string.no_choose_app))
+                }
+            }
+        })
+
+        iconsFragment.setCallbackListener(object : IconsFragment.Callbacks{
+            override fun callback(position: Int) {
+                when (position) {
+                    0 -> hide(fabSend)
+                    1 -> show(fabSend)
+                }
+            }
+        })
+
+        adapter.addFragment(homeFragment,resources.getString(R.string.home))
+        adapter.addFragment(iconsFragment,resources.getString(R.string.icons))
+        adapter.addFragment(requestsFragment,resources.getString(R.string.icon_adapter))
+        adapter.addFragment(applyFragment,resources.getString(R.string.apply))
+        adapter.addFragment(aboutFragment,resources.getString(R.string.about))
         viewPager.adapter = adapter
     }
 
@@ -670,7 +657,8 @@ class MainActivity : AppCompatActivity() {
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    inner class SectionsPagerAdapter (fm: FragmentManager) : androidx.fragment.app.FragmentPagerAdapter(fm) {
+    inner class SectionsPagerAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
+
 
         private val mFragmentList = ArrayList<Fragment>()
         private val mFragmentTitleList = ArrayList<String>()
@@ -770,7 +758,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadIcons(){
         val rs =  ArrayList<Int>()
 
-        doAsync {
+        doAsyncTask {
             if (icons.size == 0){
                 val xml = resources.getXml(R.xml.drawable)
                 var type = xml.eventType
@@ -820,36 +808,60 @@ class MainActivity : AppCompatActivity() {
                         rs.add(r)
                     }
                 }
-
             }
-
-            uiThread {
-                iconAnimator(icon1)
-                iconAnimator(icon2)
-                iconAnimator(icon3)
-                iconAnimator(icon4)
-                Glide.with(this@MainActivity).load(icons[rs[0]]).into(icon1)
-                Glide.with(this@MainActivity).load(icons[rs[1]]).into(icon2)
-                Glide.with(this@MainActivity).load(icons[rs[2]]).into(icon3)
-                Glide.with(this@MainActivity).load(icons[rs[3]]).into(icon4)
-
+            if (!isDestroyed){
+                onUI {
+                    loadAndAnimIcon(icons[rs[0]], icon1)
+                    loadAndAnimIcon(icons[rs[1]], icon2)
+                    loadAndAnimIcon(icons[rs[2]], icon3)
+                    loadAndAnimIcon(icons[rs[3]], icon4)
+                }
             }
         }
+    }
 
+    private fun loadAndAnimIcon(drawable: Int, icon: ImageView){
+
+        icon.visibility = View.INVISIBLE
+
+        Glide.with(this@MainActivity).load(drawable).listener(object : RequestListener<Drawable>{
+            override fun onLoadFailed(
+                e: GlideException?,
+                model: Any?,
+                target: Target<Drawable>?,
+                isFirstResource: Boolean
+            ): Boolean {
+                return false
+            }
+
+            override fun onResourceReady(
+                resource: Drawable?,
+                model: Any?,
+                target: Target<Drawable>?,
+                dataSource: DataSource?,
+                isFirstResource: Boolean
+            ): Boolean {
+                icon.post {
+                    iconAnimator(icon)
+                }
+                return false
+            }
+
+        }).into(icon)
     }
 
     private fun iconAnimator(v: View){
 
-        val animator1 = ObjectAnimator.ofFloat(v, "scaleX", 0f, 1f)
-        animator1.duration = 600
-        animator1.interpolator = DecelerateInterpolator()
-        animator1.start()
-
-        val animator2 = ObjectAnimator.ofFloat(v, "scaleY", 0f, 1f)
-        animator2.duration = 600
-        animator2.interpolator = DecelerateInterpolator()
-        animator2.start()
-
+        val animator = ValueAnimator()
+        animator.setFloatValues(0f, 1f)
+        animator.interpolator = DecelerateInterpolator()
+        animator.duration = 600
+        animator.addUpdateListener {
+            v.scaleX = it.animatedValue as Float
+            v.scaleY = it.animatedValue as Float
+        }
+        animator.start()
+        v.visibility = View.VISIBLE
     }
 
     /**
@@ -898,49 +910,6 @@ class MainActivity : AppCompatActivity() {
             e.printStackTrace()
         }
         return sb.toString()
-    }
-
-    /**
-     * 获取旧版appfilter
-     */
-    private fun parser2(): String{
-
-        val appFilter = File(filesDir, "appfilter.xml")
-        val content = StringBuilder()
-        appFilter.forEachLine { line ->
-            content.append(line)
-            content.append("\r\n")
-        }
-
-        if (content.isNotEmpty()){
-
-            val xml = XmlPullParserFactory.newInstance().newPullParser()
-            xml.setInput(StringReader(content.toString()))
-            var type = xml.eventType
-            try {
-                while (type != XmlPullParser.END_DOCUMENT){
-                    when(type){
-                        XmlPullParser.START_TAG ->{
-                            if (xml.name == "item"){
-                                val pkgActivity = xml.getAttributeValue(0)
-                                if (pkgActivity.indexOf("{")+1 < pkgActivity.indexOf("/") && pkgActivity.indexOf("/")+1 < pkgActivity.indexOf("}")){
-                                    adaptationsOld.add(AdaptionBean(pkgActivity.substring(pkgActivity.indexOf("{")+1,pkgActivity.indexOf("/")), pkgActivity.substring(pkgActivity.indexOf("/")+1,pkgActivity.indexOf("}")),xml.getAttributeValue(0)))
-                                }
-                            }
-                        }
-                        XmlPullParser.TEXT ->{
-
-                        }
-                    }
-                    type = xml.next()
-                }
-            } catch (e: XmlPullParserException) {
-                e.printStackTrace()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-        }
-        return content.toString()
     }
 
     /**

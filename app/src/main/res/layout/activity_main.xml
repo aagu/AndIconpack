@@ -10,36 +10,35 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
-        android:layout_height="260dp"
+        android:layout_height="280dp"
         android:layout_width="match_parent"
         android:theme="@style/AppTheme.AppBarOverlay"
-        android:fitsSystemWindows="true"
-        android:stateListAnimator="@animator/appbar_always_elevated">
+        android:stateListAnimator="@animator/appbar_always_elevated"
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             android:background="@color/white"
-            app:contentScrim="@color/white"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="@color/white">
 
             <FrameLayout
                 android:id="@+id/refresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_collapseMode="parallax"
-                android:fitsSystemWindows="true">
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax">
 
                 <ImageView
                     android:id="@+id/headImg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    tools:ignore="ContentDescription"
                     android:fitsSystemWindows="true"
-                    android:background="?attr/colorAccent"/>
+                    tools:ignore="ContentDescription"/>
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -62,7 +61,8 @@
                             android:layout_height="56dp"
                             android:layout_weight="1"
                             android:layout_margin="16dp"
-                            android:scaleType="fitCenter"/>
+                            android:scaleType="fitCenter"
+                            android:visibility="invisible"/>
 
                         <ImageView
                             android:id="@+id/icon2"
@@ -70,7 +70,8 @@
                             android:layout_height="56dp"
                             android:layout_weight="1"
                             android:layout_margin="16dp"
-                            android:scaleType="fitCenter"/>
+                            android:scaleType="fitCenter"
+                            android:visibility="invisible"/>
 
                         <ImageView
                             android:id="@+id/icon3"
@@ -78,7 +79,8 @@
                             android:layout_height="56dp"
                             android:layout_weight="1"
                             android:layout_margin="16dp"
-                            android:scaleType="fitCenter"/>
+                            android:scaleType="fitCenter"
+                            android:visibility="invisible"/>
 
                         <ImageView
                             android:id="@+id/icon4"
@@ -86,7 +88,8 @@
                             android:layout_height="56dp"
                             android:layout_weight="1"
                             android:layout_margin="16dp"
-                            android:scaleType="fitCenter"/>
+                            android:scaleType="fitCenter"
+                            android:visibility="invisible"/>
 
                     </LinearLayout>
 
